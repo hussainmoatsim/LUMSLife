@@ -1,40 +1,29 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.2.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "reactstrap": "^9.1.6",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "LUMSLife",
+  "version": "1.0.0",
+  "description": "LUMS Life",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "create_db": "cd backend && npm run create_db",
+    "seed_db": "cd backend && npm run seed_db",
+    "init_db": "cd backend && npm run create_db && npm run seed_db",
+    "server": "cd backend && npm run server",
+    "app": "cd frontend && npm run start",
+    "start": "cd frontend && npm run start"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hussainmoatsim/LUMSLife.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hussainmoatsim/LUMSLife/issues"
+  },
+  "homepage": "https://github.com/hussainmoatsim/LUMSLife",
+  "dependencies": {
+    "react-router-bootstrap": "^0.26.2",
+    "react-time-picker": "^5.1.0",
+    "reactstrap": "^9.1.5"
   }
 }
