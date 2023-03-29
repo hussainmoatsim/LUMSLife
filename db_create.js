@@ -32,16 +32,93 @@ function createTable(CreateQuerry)
         });
 }
 
-const userTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.User (User_id int NOT NULL AUTO_INCREMENT, User_type int, name varchar(255), email varchar(255), password_hash varchar(255), PRIMARY KEY (User_id))';
-const studentTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))';
-const societyMemberTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Society_member (member_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, membership int, PRIMARY KEY (member_id), FOREIGN KEY (User_id) REFERENCES User(User_id))';
-const adminTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Admin (Admin_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, PRIMARY KEY (Admin_id), FOREIGN KEY (User_id) REFERENCES User(User_id))';
-const societyTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Society (Society_id int NOT NULL AUTO_INCREMENT, membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))';
-const postsTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Posts (posts_id int NOT NULL AUTO_INCREMENT, title varchar(255), content varchar(255), user_id int, PRIMARY KEY (posts_id), FOREIGN KEY (user_id) REFERENCES User(User_id))';
-const societyMembershipTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Society_membership (Society_id int NOT NULL, member_id int NOT NULL, joined bool, PRIMARY KEY (Society_id, member_id), FOREIGN KEY (Society_id) REFERENCES Society(Society_id), FOREIGN KEY (member_id) REFERENCES Society_member(member_id))';
-const interactionsTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Interactions (post_id int NOT NULL, comment varchar(255), user_id int NOT NULL, liked bool, PRIMARY KEY (post_id, user_id), FOREIGN KEY (post_id) REFERENCES Posts(posts_id), FOREIGN KEY (user_id) REFERENCES User(User_id))';
-const eventsTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Events (events_id int NOT NULL AUTO_INCREMENT, name varchar(255), society_id int, date date, PRIMARY KEY (events_id), FOREIGN KEY (society_id) REFERENCES Society(Society_id))';
-const eventAttendanceTable = 'CREATE TABLE IF NOT EXISTS '+process.env.database+'.Event_attendance (event_id int NOT NULL, user_id int NOT NULL, PRIMARY KEY (event_id, user_id), FOREIGN KEY (event_id) REFERENCES Events(events_id), FOREIGN KEY (user_id) REFERENCES User(User_id))';
+const first_user_id = 1000;
+
+const createUserTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.User (
+    User_id int NOT NULL AUTO_INCREMENT,
+    User_type varchar(255),
+    name varchar(255),
+    email varchar(255),
+    password_hash varchar(255),
+    PRIMARY KEY (User_id)
+  ) AUTO_INCREMENT=${first_user_id}`;
+
+  const createStudentTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Student (
+    User_id int NOT NULL,
+    Student_id int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (Student_id),
+    FOREIGN KEY (User_id) REFERENCES User(User_id)
+  ) AUTO_INCREMENT=${first_user_id}`;
+
+  const createSocietyMemberTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Society_member (
+    User_id int NOT NULL,
+    member_id int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (member_id),
+    FOREIGN KEY (User_id) REFERENCES User(User_id)
+  ) AUTO_INCREMENT=${first_user_id}`;
+
+  const createAdminTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Admin (
+    User_id int NOT NULL,
+    Admin_id int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (Admin_id),
+    FOREIGN KEY (User_id) REFERENCES User(User_id)
+  ) AUTO_INCREMENT=${first_user_id}`;
+
+  const createSocietyTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Society (
+    Society_id int NOT NULL AUTO_INCREMENT,
+    name varchar(255),
+    email varchar(255),
+    PRIMARY KEY (Society_id)
+  ) AUTO_INCREMENT=1000;`;
+
+  const createPostsTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Posts (
+    posts_id int NOT NULL AUTO_INCREMENT,
+    title varchar(255),
+    content varchar(255),
+    user_id int,
+    society_id int,
+    is_society_post bool,
+    PRIMARY KEY (posts_id),
+    FOREIGN KEY (user_id) REFERENCES User(User_id),
+    FOREIGN KEY (society_id) REFERENCES Society(Society_id)
+  )`;
+
+  const createSocietyMembershipTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Society_membership (
+    member_id int NOT NULL,
+    Society_id int NOT NULL,
+    joined bool,
+    PRIMARY KEY (member_id, Society_id),
+    FOREIGN KEY (member_id) REFERENCES Society_member(member_id),
+    FOREIGN KEY (Society_id) REFERENCES Society(Society_id)
+  )`;
+
+  const createInteractionsTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Interactions (
+    post_id int NOT NULL,
+    comment varchar(255),
+    user_id int,
+    liked bool,
+    FOREIGN KEY (post_id) REFERENCES Posts(posts_id),
+    FOREIGN KEY (user_id) REFERENCES User(User_id)
+  )`;
+
+  const createEventsTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Events (
+    events_id int NOT NULL AUTO_INCREMENT,
+    name varchar(255),
+    society_id int,
+    date date,
+    PRIMARY KEY (events_id),
+    FOREIGN KEY (society_id) REFERENCES Society(Society_id)
+  )`;
+
+  const createEventAttendanceTableQuery = `CREATE TABLE IF NOT EXISTS ${process.env.database}.Event_attendance (
+    event_id int NOT NULL,
+    user_id int NOT NULL,
+    PRIMARY KEY (event_id, user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(events_id),
+    FOREIGN KEY (user_id) REFERENCES User(User_id)
+    )`;
+
+
 
 
 connectionString.connect((error)=>
@@ -59,16 +136,18 @@ connectionString.connect((error)=>
             {
                 console.log("Database Created");
                 
-                createTable(userTable);
-                createTable(studentTable);
-                createTable(societyMemberTable);
-                createTable(adminTable);
-                createTable(societyTable);
-                createTable(postsTable);
-                createTable(societyMembershipTable);
-                createTable(interactionsTable);
-                createTable(eventsTable);
-                createTable(eventAttendanceTable);
+                createTable(createUserTableQuery);
+                createTable(createStudentTableQuery);
+                createTable(createSocietyMemberTableQuery);
+                createTable(createAdminTableQuery);
+                createTable(createSocietyTableQuery);
+                createTable(createPostsTableQuery);
+                createTable(createSocietyMembershipTableQuery);
+                createTable(createInteractionsTableQuery);
+                createTable(createEventsTableQuery);
+                createTable(createEventAttendanceTableQuery);
+
+
 
                 connectionString.end();
             }

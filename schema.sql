@@ -1,112 +1,103 @@
-Table User {
-User_id int
-User_type int
-name string
-email string
-password_hash string
-posts_id int
+CREATE TABLE `User` (
+  `User_id` int,
+  `User_type` int,
+  `name` varchar(255),
+  `email` varchar(255),
+  `password_hash` varchar(255),
+  `PRIMARY` KEY(User_id)
+);
 
-Indexes {
-(User_id) [pk]
-}
-}
+CREATE TABLE `Student` (
+  `User_id` int,
+  `Student_id` int,
+  `PRIMARY` KEY(Student_id),
+  `FOREIGN` KEY(User_id)
+);
 
-Table Student {
-User_id int
-Student_id int
+CREATE TABLE `Society_member` (
+  `User_id` int,
+  `member_id` int,
+  `PRIMARY` KEY(member_id),
+  `FOREIGN` KEY(User_id)
+);
 
-Indexes {
-(Student_id) [pk]
-}
-}
+CREATE TABLE `Admin` (
+  `User_id` int,
+  `Admin_id` int,
+  `PRIMARY` KEY(Admin_id),
+  `FOREIGN` KEY(User_id)
+);
 
+CREATE TABLE `Society` (
+  `Society_id` int,
+  `name` string,
+  `email` string,
+  `PRIMARY` KEY(Society_id)
+);
 
+CREATE TABLE `Posts` (
+  `posts_id` int,
+  `title` varchar(255),
+  `content` varchar(255),
+  `user_id` int,
+  `society_id` int,
+  `is_society_post` bool,
+  `PRIMARY` KEY(posts_id),
+  `FOREIGN` KEY(user_id)
+);
 
-Table Society_member {
-User_id int
-member_id int
-membership int
+CREATE TABLE `Society_membership` (
+  `member_id` int,
+  `Society_id` int,
+  `joined` bool,
+  `PRIMARY` KEY(member_id  society_id),
+  `FOREIGN` KEY(member_id)
+);
 
-Indexes {
-(member_id) [pk]
-}
-}
+CREATE TABLE `Interactions` (
+  `post_id` int,
+  `comment` varchar(255),
+  `user_id` int,
+  `liked` bool,
+  `FOREIGN` KEY(post_id)
+);
 
+CREATE TABLE `events` (
+  `events_id` int,
+  `name` varchar(255),
+  `society_id` int,
+  `date` date,
+  `PRIMARY` KEY(events_id),
+  `FOREIGN` KEY(Society_id)
+);
 
-Table Admin {
-User_id int
-Admin_id int
+CREATE TABLE `Event_attendance` (
+  `event_id` int,
+  `user_id` int,
+  `PRIMARY` KEY(event_id  user_id),
+  `FOREIGN` KEY(event_id)
+);
 
-Indexes {
-(Admin_id) [pk]
-}
-}
+ALTER TABLE `Society_member` ADD FOREIGN KEY (`member_id`) REFERENCES `Society_membership` (`member_id`);
 
+ALTER TABLE `Society` ADD FOREIGN KEY (`Society_id`) REFERENCES `Society_membership` (`Society_id`);
 
-Table Society {
-  Society_id int
-  membership int
-  posts_id int
-  
-  indexes {
-    (Society_id) [pk]
-  }
-}
+ALTER TABLE `Student` ADD FOREIGN KEY (`User_id`) REFERENCES `User` (`User_id`);
 
+ALTER TABLE `Admin` ADD FOREIGN KEY (`User_id`) REFERENCES `User` (`User_id`);
 
-Table Posts {
-  posts_id int
-  title string
-  content string
-  user_id int
-  indexes {
-    (posts_id) [pk]
-  }
-}
+ALTER TABLE `Society_member` ADD FOREIGN KEY (`User_id`) REFERENCES `User` (`User_id`);
 
-Table Society_membership {
-  Society_id int
-  member_id int
-  joined bool
-}
+ALTER TABLE `Interactions` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`User_id`);
 
-Table Interactions{
-  post_id int
-  comment string
-  user_id int
-  liked bool
-}
+ALTER TABLE `Interactions` ADD FOREIGN KEY (`post_id`) REFERENCES `Posts` (`posts_id`);
 
-table events{
-  events_id int
-  name string
-  society_id string
-  date date
-}
+ALTER TABLE `Posts` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`User_id`);
 
-table event_attendance{
-  event_id int
-  user_id int
-}
+ALTER TABLE `Event_attendance` ADD FOREIGN KEY (`event_id`) REFERENCES `events` (`events_id`);
 
-Ref: "User"."posts_id" < "Posts"."posts_id"
+ALTER TABLE `Event_attendance` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`User_id`);
 
-Ref: "Society"."posts_id" < "Posts"."posts_id"
+ALTER TABLE `events` ADD FOREIGN KEY (`society_id`) REFERENCES `Society` (`Society_id`);
 
-Ref: "Society_membership"."member_id" < "Society_member"."member_id"
-
-Ref: "Society_membership"."Society_id" < "Society"."Society_id"
-
-Ref: "User"."User_id" - "Student"."User_id"
-
-Ref: "User"."User_id" - "Admin"."User_id"
-
-Ref: "User"."User_id" - "Society_member"."User_id"
-
-Ref: "User"."User_id" < "Interactions"."user_id"
-
-Ref: "Posts"."posts_id" < "Interactions"."post_id"
-
-Ref: "Society"."Society_id" < "events"."society_id"
-
-Ref: "events"."events_id" < "event_attendance"."event_id"
+ALTER TABLE `Posts` ADD FOREIGN KEY (`society_id`) REFERENCES `Society` (`Society_id`);
