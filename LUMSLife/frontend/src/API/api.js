@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let url = `http://localhost:3000/api`;
+export let url = `http://localhost:3000/api`;
 
 //the data returned by a function can be accessed by using .data on the object
 

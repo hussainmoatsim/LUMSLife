@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const express = require("express");
 const bodyParser = require("body-parser");
-// const dotenv = require("dotenv").config({ path: "../../.env" });
+const dotenv = require("dotenv").config({ path: "../../.env" });
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useRef, useEffect, useContext, useState } from "react";
-import { validateEmail } from "../API/api";
+import { validateEmail, signup } from "../API/api";
 
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
@@ -32,7 +32,8 @@ const Signup = () => {
     } else {
       let res = await validateEmail(email);
       if (res.data.isSuccessful) {
-        navigate(`/signup/${accountType}`, {
+        await signup(email, password, 1);
+        navigate(`/${accountType}`, {
           state: { email: email, password: password },
         });
       } else {

@@ -158,7 +158,8 @@ const login = asyncHandler(async (req, response) => {
         response.send(returnMessage);
         connection.end();
       } else {
-        if (res[0].password != password) {
+        console.log(res);
+        if (res[0].password_hash != password) {
           let returnMessage = {
             isSuccessful: false,
             errorMessage: "Password is incorrect",
@@ -179,7 +180,6 @@ const login = asyncHandler(async (req, response) => {
       }
     }
   });
-
   connection.end();
 });
 module.exports = {

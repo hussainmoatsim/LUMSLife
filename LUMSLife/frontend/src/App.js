@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import Homepage from "./pages/student/Hompage.jsx";
 import "./App.css";
 
 import { UserContext } from "./UserContext";
@@ -57,7 +57,7 @@ function App() {
 
                 <Route exact path="/login" element={<Login />}></Route>
 
-                {/* <Route path="*" element={<NotFound />}></Route> */}
+                <Route path="/student" element={<Homepage />}></Route>
               </Routes>
             </div>
           </UserState.Provider>
