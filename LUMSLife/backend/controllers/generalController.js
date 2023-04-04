@@ -21,7 +21,6 @@ const validateConnection = () => {
   });
   return connection;
 };
-
 // const validateConnection = async () => {
 //   try {
 //     const connection = await createConnection({
