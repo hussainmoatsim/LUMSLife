@@ -1,20 +1,27 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
-import { UserContext } from './UserContext';
-import { UserState } from './UserState';
+import { UserContext } from "./UserContext";
+import { UserState } from "./UserState";
 
-import Signup from "./components/Signup";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 function App() {
+  const [accountID, setAccountID] = useState(null);
+  const [accountType, setAccountType] = useState(null);
+  const [accountName, setAccountName] = useState(null);
 
-  const [accountID, setAccountID] = useState(null)
-  const [accountType, setAccountType] = useState(null)
-  const [accountName, setAccountName] = useState(null)
-  
-  const userContext = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
+  const userContext = {
+    accountID,
+    setAccountID,
+    accountType,
+    setAccountType,
+    accountName,
+    setAccountName,
+  };
 
   const userState = {
     accountID: accountID,
@@ -22,40 +29,37 @@ function App() {
     accountType: accountType,
     setAccountType: setAccountType,
     accountName: accountName,
-    setAccountName: setAccountName
-  }
+    setAccountName: setAccountName,
+  };
 
   useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("userState"))
+    const savedState = JSON.parse(localStorage.getItem("userState"));
 
     if (savedState) {
-        userState.setAccountID(savedState.accountID)
-        userState.setAccountType(savedState.accountType)
-        userState.setAccountName(savedState.accountName)
+      userState.setAccountID(savedState.accountID);
+      userState.setAccountType(savedState.accountType);
+      userState.setAccountName(savedState.accountName);
 
-        userState["accountID"] = savedState.accountID
-        userState["accountName"] = savedState.accountType
-        userState["accountType"] = savedState.accountName
+      userState["accountID"] = savedState.accountID;
+      userState["accountName"] = savedState.accountType;
+      userState["accountType"] = savedState.accountName;
     }
-
-  }, [])
+  }, []);
 
   return (
     <Router>
       <div className="App">
         <UserContext.Provider value={userContext}>
           <UserState.Provider value={userState}>
+            <div className="content">
+              <Routes>
+                <Route exact path="/signup" element={<Signup />}></Route>
 
-          <div className="content">
-            <Routes>
+                <Route exact path="/login" element={<Login />}></Route>
 
-                <Route exact path="/signup" element={<Signup/>}></Route>
-
-                <Route exact path="/login" element={<Login/>}></Route>
-
-                <Route path="*" element={<NotFound/>}></Route>
-            </Routes>
-          </div>
+                {/* <Route path="*" element={<NotFound />}></Route> */}
+              </Routes>
+            </div>
           </UserState.Provider>
         </UserContext.Provider>
       </div>

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useRef, useEffect, useContext, useState } from "react";
-import { validateEmail } from "../API/api";
+import { login } from "../API/api";
 
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import "../CSS/signup.css";
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -24,20 +24,13 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Incorrect Email");
-    } else if (password.length <= 8) {
-      setError("Password must be atleast 8 characters");
+    let res = await login(email, password);
+    if (res.data.isSuccessful) {
+      navigate(`/login/${accountType}`, {
+        state: { email: email, password: password },
+      });
     } else {
-      let res = await validateEmail(email);
-      if (res.data.isSuccessful) {
-        navigate(`/signup/${accountType}`, {
-          state: { email: email, password: password },
-        });
-      } else {
-        setError(res.data.errorMessage);
-      }
+      setError(res.data.errorMessage);
     }
   };
 
@@ -45,9 +38,9 @@ const Signup = () => {
     <div className="form">
       <Container>
         <Form onSubmit={handleSubmit}>
-          <h1 className="text-center pt-3 pb-3">Create Your Account</h1>
+          <h1 className="text-center pt-3 pb-3">Sign In</h1>
 
-          <hr style={{ width: "350px", margin: "20px auto" }} />
+          <hr />
 
           <Stack gap={1} className="col-12 mx-auto">
             <Form.Group className="mb-3">
@@ -82,10 +75,21 @@ const Signup = () => {
               <option value="student">Student</option>
               <option value="society">Society</option>
             </Form.Select>
-
+            <h3
+              style={{
+                "font-size": "12px",
+                color: "#0A66C2",
+                "padding-left": "5px",
+              }}
+            >
+              Forgot Password?
+            </h3>
             <Button variant="outline-primary" type="submit" className="my-2">
-              Create My Account
+              Sign In
             </Button>
+            <p style={{ "font-size": "12px", "padding-left": "5px" }}>
+              New here? <Link to="/signup">create new account</Link>
+            </p>
 
             {error && <Alert variant="danger">{error}</Alert>}
           </Stack>
@@ -95,4 +99,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
