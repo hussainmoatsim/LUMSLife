@@ -180,5 +180,38 @@ export async function login(req, response) {
         }
     })
 
+
+
     connection.end()
 }
+
+export async function createPost(req, res) {
+    const { title, content, user_id, society_id, is_society_post } = req.body;
+
+    const connection = validateConnection();
+
+    const insertQuery = `INSERT INTO Posts (title, content, user_id, society_id, is_society_post) VALUES (?, ?, ?, ?, ?)`;
+
+    const values = [title, content, user_id, society_id, is_society_post];
+
+    connection.query(insertQuery, values, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({
+                success: false,
+                message: "Error creating post"
+            });
+        } else {
+            console.log(result);
+            res.send({
+                success: true,
+                message: "Post created successfully",
+                post_id: result.insertId
+            });
+        }
+
+        connection.end();
+    });
+}
+
+
