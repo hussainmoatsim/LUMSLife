@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useRef, useEffect, useContext, useState } from "react";
@@ -11,8 +12,8 @@ import Alert from "react-bootstrap/Alert";
 import "../CSS/signup.css";
 
 const Login = () => {
+  const user = useContext(UserContext);
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState("student");
@@ -26,9 +27,11 @@ const Login = () => {
     e.preventDefault();
     let res = await login(email, password);
     if (res.data.isSuccessful) {
-      navigate(`/login/${accountType}`, {
-        state: { email: email, password: password },
-      });
+      user.setAccountID(res.data.accountID);
+      user.setAccountType(res.data.accountType);
+      // navigate(`/${accountType}`, {
+      //   state: { email: email, password: password },
+      // });
     } else {
       setError(res.data.errorMessage);
     }
@@ -77,9 +80,9 @@ const Login = () => {
             </Form.Select>
             <h3
               style={{
-                "font-size": "12px",
+                fontSize: "12px",
                 color: "#0A66C2",
-                "padding-left": "5px",
+                paddingLeft: "5px",
               }}
             >
               Forgot Password?
@@ -87,7 +90,7 @@ const Login = () => {
             <Button variant="outline-primary" type="submit" className="my-2">
               Sign In
             </Button>
-            <p style={{ "font-size": "12px", "padding-left": "5px" }}>
+            <p style={{ fontSize: "12px", paddingLeft: "5px" }}>
               New here? <Link to="/signup">create new account</Link>
             </p>
 

@@ -1,7 +1,9 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useRef, useEffect, useContext, useState } from "react";
 import { validateEmail, signup } from "../API/api";
+import { Redirect } from "react-router";
 
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
@@ -27,14 +29,13 @@ const Signup = () => {
 
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Incorrect Email");
-    } else if (password.length <= 8) {
+    } else if (password.length < 8) {
       setError("Password must be atleast 8 characters");
     } else {
       let res = await validateEmail(email);
       if (res.data.isSuccessful) {
-        await signup(email, password, 1);
-        navigate(`/${accountType}`, {
-          state: { email: email, password: password },
+        navigate(`/verify-email`, {
+          state: { email: email, password: password, accountType: accountType },
         });
       } else {
         setError(res.data.errorMessage);

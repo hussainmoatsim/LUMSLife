@@ -34,3 +34,15 @@ export async function validateEmail(email) {
 
   return await axios.post(`${url}/general/validateEmail`, request);
 }
+
+export async function createPost(formData) {
+  return await axios.post(`${url}/general/create-post`, formData);
+}
+
+export async function emailVerification(email, otp) {
+  const request = {
+    email: email,
+    otp: otp,
+  };
+  return await axios.post(`${url}/general/verify-email`, request);
+}

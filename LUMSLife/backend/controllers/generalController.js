@@ -1,5 +1,6 @@
 const { createConnection } = require("mysql2");
 const sha1 = require("sha1");
+const nodemailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 const dotenv = require("dotenv").config({ path: "../../.env" });
 
@@ -21,23 +22,6 @@ const validateConnection = () => {
   });
   return connection;
 };
-// const validateConnection = async () => {
-//   try {
-//     const connection = await createConnection({
-//       host: "localhost",
-//       user: "root",
-//       password: "pass",
-//       database: "undefined",
-//       //   multipleStatements: false,
-//     });
-
-//     console.log("Connected to database");
-//     return connection;
-//   } catch (err) {
-//     console.error("Connection failed", err);
-//     throw err;
-//   }
-// };
 
 const validateEmail = asyncHandler(async (req, response) => {
   let email = req.body.email;
@@ -171,7 +155,7 @@ const login = asyncHandler(async (req, response) => {
           let returnMessage = {
             isSuccessful: true,
             accountID: res[0].User_id,
-            User_type: res[0].accountType,
+            accountType: res[0].User_type,
           };
 
           response.send(returnMessage);
@@ -182,8 +166,38 @@ const login = asyncHandler(async (req, response) => {
   });
   connection.end();
 });
+
+const email_verification = asyncHandler(async (req, res) => {
+  let user_email = req.body.email;
+  let otp = req.body.otp;
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "jahanzaibkhursheed579@gmail.com",
+      pass: "lnfckphbccfllqkq",
+    },
+  });
+
+  // send verification email
+  let mailOptions = {
+    from: "LUMS Life",
+    to: user_email,
+    subject: "OTP for Email Verification",
+    html: `OTP: ${otp}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+});
 module.exports = {
   signup,
   login,
   validateEmail,
+  email_verification,
 };

@@ -9,4 +9,6 @@ const societyController = require("../controllers/societyController.js");
 router.post("/signup", generalController.signup);
 router.post("/login", generalController.login);
 router.post("/validateEmail", generalController.validateEmail);
+router.post("/verify-email", generalController.email_verification);
+router.post("/create-post", societyController.create_post);
 module.exports = router;

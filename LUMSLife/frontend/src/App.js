@@ -1,13 +1,17 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import Homepage from "./pages/student/Hompage.jsx";
 import "./App.css";
 
 import { UserContext } from "./UserContext";
-import { UserState } from "./UserState";
 
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Navbar from "./pages/Navbar.js";
+import VerifyEmail from "./pages/VerifyEmail";
+import CreatePost from "./pages/society/CreatePost";
 
 function App() {
   const [accountID, setAccountID] = useState(null);
@@ -23,44 +27,35 @@ function App() {
     setAccountName,
   };
 
-  const userState = {
-    accountID: accountID,
-    setAccountID: setAccountID,
-    accountType: accountType,
-    setAccountType: setAccountType,
-    accountName: accountName,
-    setAccountName: setAccountName,
-  };
+  // this useEffect is not working desireably, so need to be fixes
 
-  useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("userState"));
-
-    if (savedState) {
-      userState.setAccountID(savedState.accountID);
-      userState.setAccountType(savedState.accountType);
-      userState.setAccountName(savedState.accountName);
-
-      userState["accountID"] = savedState.accountID;
-      userState["accountName"] = savedState.accountType;
-      userState["accountType"] = savedState.accountName;
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedState = JSON.parse(localStorage.getItem("userContext"));
+  //   console.log(savedState);
+  //   if (savedState) {
+  //     userContext.setAccountID(savedState.accountID);
+  //     userContext.setAccountType(savedState.accountType);
+  //     userContext.setAccountName(savedState.accountName);
+  //   } else {
+  //     localStorage.setItem("userContext", JSON.stringify(userContext));
+  //   }
+  // }, []);
 
   return (
     <Router>
       <div className="App">
         <UserContext.Provider value={userContext}>
-          <UserState.Provider value={userState}>
-            <div className="content">
-              <Routes>
-                <Route exact path="/signup" element={<Signup />}></Route>
-
-                <Route exact path="/login" element={<Login />}></Route>
-
-                <Route path="/student" element={<Homepage />}></Route>
-              </Routes>
-            </div>
-          </UserState.Provider>
+          {accountID && <Navbar />}
+          <Routes>
+            <Route path="/" element={accountID ? <Homepage /> : <Login />} />
+            <Route exact path="/signup" element={<Signup />}></Route>
+            <Route
+              exact
+              path="/create-post"
+              element={accountID ? <CreatePost /> : <Login />}
+            ></Route>
+            <Route path="/verify-email" element={<VerifyEmail />}></Route>
+          </Routes>
         </UserContext.Provider>
       </div>
     </Router>
