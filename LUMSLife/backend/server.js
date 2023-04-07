@@ -1,32 +1,29 @@
-import express, { json } from 'express'
-import cors from 'cors'
-import { config } from 'dotenv';
-
-import router from './routes/routes.js'
-
-config({path:".env"});
+const express = require("express");
+const { json, urlencoded } = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv").config({ path: "../.env" });
+const router = require("./routes/routes.js");
 
 // creating the server
-const srvr = express()
+const app = express();
 
 // enabling cors to allow for communication between different servers
-srvr.use(cors());
+app.use(cors());
 
 // parsing incoming JSON requests and placing parsed data within req.body
-srvr.use(json())
-
-// listening for any requests made to the server
-srvr.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT}`)
-})
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 // printing any requests made to the server
-srvr.use((req, res, next) => {
-    console.log(req.path, req.method)
-    next()
-})
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
+});
 
 // routing requests to the server using the router specified in routes/routes.js
-srvr.post('/api/general/signup', router)
-srvr.post('/api/general/login', router)
-srvr.post('/api/general/validateEmail', router)
+app.use("/api/general", router);
+
+// listening for any requests made to the server
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port ${process.env.PORT}`);
+});

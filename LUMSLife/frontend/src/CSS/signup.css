@@ -1,6 +1,6 @@
 .content-container {
   background-color: #023272;
-  min-height: 100vh;
+  min-height: 90vh;
   color: white;
 }
 .form {
@@ -8,7 +8,9 @@
   justify-content: center;
   flex-direction: column;
   width: 35%;
+  min-height: 100vh;
   margin: 0 auto;
+  align-items: center;
 }
 .form-group {
   margin: 10px 0;
