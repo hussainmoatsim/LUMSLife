@@ -1,4 +1,4 @@
-import { getConnection } from './database.js';
+import { getConnection } from './database.js'; //need the connection file to be made for this import
 import sha1 from 'sha1';
 
 export async function login(req, response) 
