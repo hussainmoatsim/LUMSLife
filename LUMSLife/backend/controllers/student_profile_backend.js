@@ -22,7 +22,7 @@ app.get('/api/profile/edit', function(req, res) {
 
 app.get('/api/profile/cv-about-me', function(req, res) {
   // Handle the request to retrieve the student's CV and About Me content
-  const sql = 'SELECT cv, about_me FROM students WHERE User_id = ?';
+  const sql = 'SELECT cv, about_me FROM Student WHERE User_id = ?';
   const values = [req.query.id];
   db.query(sql, values, function(err, result) {
     if (err) {
