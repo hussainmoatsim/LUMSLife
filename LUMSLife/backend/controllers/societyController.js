@@ -1,5 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const { db } = require("../config/db_create");
+const dotenv = require("dotenv").config({ path: "../../.env" });
+
+
+const validateConnection = () => {
+  let connection = createConnection({
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    multipleStatements: false,
+  });
+  connection.connect((err) => {
+    if (err) {
+      console.log("Connection Failed");
+    } else {
+      console.log("Connected");
+    }
+  });
+  return connection;
+};
 
 const create_post = asyncHandler(async (req, res) => {
   const {
@@ -35,3 +55,32 @@ const create_post = asyncHandler(async (req, res) => {
 module.exports = {
   create_post,
 };
+
+export async function removeSocietyAccount(req, response) {
+
+  let Society_id = req.body.Society_id
+
+  let connection = validateConnection()
+
+  let deleteAccount = `DELETE FROM societyTable WHERE Society_id = ?`
+  let values = [Society_id]
+
+  connection.query(deleteAccount, values, (err, res) => {
+
+      if (err) {
+          let returnMessage = {
+              isSuccessful: false,
+              errorMessage: "Could not delete account"
+          }
+          response.send(returnMessage)
+          connection.end()
+
+      } else {
+          let returnMessage = {
+              isSuccessful: true
+          }
+          response.send(returnMessage)
+          connection.end()
+      }
+  })
+}

@@ -5,7 +5,7 @@ export let url = `http://localhost:3000/api`;
 //the data returned by a function can be accessed by using .data on the object
 
 // create a new account of account_type with the specified email and password
-// returns a json object containing "is_succesful" and "account_ID" / "error_message"
+// returns a json object containing is_succesful and "account_ID" / error_message
 export async function signup(email, password, accountType) {
   const request = {
     email: email,
@@ -17,7 +17,7 @@ export async function signup(email, password, accountType) {
 }
 
 // login to an existing account with the specified email and password
-// return a json object containing "is_succesful" and "account_ID" / "error_message"
+// return a json object containing is_succesful and "account_ID" / error_message
 export async function login(email, password) {
   const request = {
     email: email,
@@ -45,4 +45,27 @@ export async function emailVerification(email, otp) {
     otp: otp,
   };
   return await axios.post(`${url}/general/verify-email`, request);
+}
+
+//Remove a student account associated with a specific student id
+// return a json object containing is_succesful / error_message
+export async function removeStudentAccount(Student_id) {
+    
+  const request = {
+    Student_id: Student_id
+  }
+  
+
+  return await axios.post(`${url}/general/removeStudentAccount`, request)
+}
+
+//Remove a society account associated with a specific society id
+// return a json object containing is_succesful / error_message
+export async function removeSocietyAccount(Society_id) {
+    
+  const request = {
+    Society_id: Society_id
+  }
+
+  return await axios.post(`${url}/general/removeSocietyAccount`, request)
 }
