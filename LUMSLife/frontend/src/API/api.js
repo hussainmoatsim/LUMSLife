@@ -46,3 +46,23 @@ export async function emailVerification(email, otp) {
   };
   return await axios.post(`${url}/general/verify-email`, request);
 }
+
+//Remove a student account associated with a specific student id
+// return a json object containing is_succesful / error_message
+export async function removeStudentAccount(Student_id) {
+  const request = {
+    Student_id: Student_id,
+  };
+
+  return await axios.post(`${url}/general/removeStudentAccount`, request);
+}
+
+//Remove a society account associated with a specific society id
+// return a json object containing is_succesful / error_message
+export async function removeSocietyAccount(Society_id) {
+  const request = {
+    Society_id: Society_id,
+  };
+
+  return await axios.post(`${url}/general/removeSocietyAccount`, request);
+}

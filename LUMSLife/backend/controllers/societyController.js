@@ -32,6 +32,31 @@ const create_post = asyncHandler(async (req, res) => {
   });
 });
 
+const getEventInfo = asyncHandler((req, res) => {
+  // Handle the request to retrieve event information
+  const sql = "SELECT name, description, date FROM Events WHERE events_id = ?";
+  const values = [req.query.event_id];
+  db.query(sql, values, function (err, result) {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+const getEventAttendance = asyncHandler((req, res) => {
+  const sql =
+    "SELECT u.name, u.email FROM Event_attendance ea JOIN User u ON ea.user_id = u.User_id WHERE ea.event_id = ?";
+  const values = [req.query.event_id];
+  db.query(sql, values, function (err, result) {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
 module.exports = {
   create_post,
+  getEventAttendance,
+  getEventInfo,
 };

@@ -2,7 +2,10 @@ const express = require("express");
 const { json, urlencoded } = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv").config({ path: "../.env" });
-const router = require("./routes/routes.js");
+const generalRouter = require("./routes/generalRoutes.js");
+const studentRouter = require("./routes/studentRoutes.js");
+const societyRouter = require("./routes/societyRoutes.js");
+const adminRouter = require("./routes/adminRoutes.js");
 
 // creating the server
 const app = express();
@@ -21,7 +24,10 @@ app.use((req, res, next) => {
 });
 
 // routing requests to the server using the router specified in routes/routes.js
-app.use("/api/general", router);
+app.use("/api/general", generalRouter);
+app.use("/api/society", societyRouter);
+app.use("/api/student", studentRouter);
+app.use("/api/admin", adminRouter);
 
 // listening for any requests made to the server
 app.listen(process.env.PORT, () => {
