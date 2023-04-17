@@ -4,7 +4,7 @@ User_type int
 name string
 email string
 password_hash string
-posts_id int
+
 
 Indexes {
 (User_id) [pk]
