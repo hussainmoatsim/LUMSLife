@@ -166,6 +166,62 @@ const login = asyncHandler(async (req, response) => {
   });
   connection.end();
 });
+export async function search(req, response) {
+
+  let searchString = req.body.searchString
+  
+
+  let querySociety = `SELECT * FROM Society WHERE name LIKE ? OR Society_id LIKE ?`
+  let valuesSociety = [`${searchString}%`, `${searchString}%`]
+
+  let queryPosts = `SELECT * FROM Posts WHERE category LIKE ? OR title LIKE ? OR description LIKE ? OR location LIKE ?`
+  let valuesPosts = [`${searchString}%`, `${searchString}%`, `${searchString}%`, `${searchString}%`]
+
+  let queryEvents = `SELECT * FROM Events WHERE name LIKE ? OR date LIKE ?`
+  let valuesEvents = [`${searchString}%`, `${searchString}%`]
+
+  let connection = validateConnection()
+
+  connection.query(querySociety, valuesSociety, (err, res) => {
+      if (err) {
+          console.log(err)
+
+      } else {
+          let societyList = res
+          connection.query(queryPosts, valuesPosts, (err, res) => {
+              
+              if (err) {
+                  console.log(err)
+      
+              } else {
+                  let postsList = res
+                  connection.query(queryEvents, valuesEvents, (err, res) => {
+              
+                    if (err) {
+                        console.log(err)
+            
+                    } else {
+                        let eventsList = res
+                  console.log(societyList)
+                  console.log(postsList)
+                  console.log(eventsList)
+                  let returnMessage = {
+                      "societyList": societyList,
+                      "postsList": postsList,
+                      "eventsList": eventsList
+
+                  }
+                  
+                  response.send(returnMessage)
+                  connection.end()
+              }
+          })
+      }
+  })
+
+}
+  })}
+
 
 const email_verification = asyncHandler(async (req, res) => {
   let user_email = req.body.email;
