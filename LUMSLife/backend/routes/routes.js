@@ -11,6 +11,7 @@ router.post("/signup", generalController.signup);
 router.post("/login", generalController.login);
 router.post("/validateEmail", generalController.validateEmail);
 router.post("/verify-email", generalController.email_verification);
+router.post("/search", generalController.search);
 
 router.post('/removeSocietyAccount', societyController.removeSocietyAccount);
 router.post("/create-post", societyController.create_post);
