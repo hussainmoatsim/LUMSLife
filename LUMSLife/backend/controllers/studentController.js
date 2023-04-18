@@ -23,6 +23,35 @@ const interact_post = asyncHandler(async (req, res) => {
   });
 });
 
+
+const bookEvent = asyncHandler(async (req, res) => {
+  const { user_id, event_id } = req.body;
+
+  // Check if the user has already booked the event
+  const unconfirmedBookingSQL = `
+    SELECT COUNT(*) as unconfirmed_count
+    FROM Bookings
+    WHERE user_id = ? AND confirmed = 0
+  `;
+  const [unconfirmedResult] = await db.promise().query(unconfirmedBookingSQL, [user_id]);
+  const unconfirmedCount = unconfirmedResult[0].unconfirmed_count;
+
+  
+  if (unconfirmedCount >= 1) { //prevents users from booking more than one event at a time
+    return res.status(400).json({ message: "Too many unconfirmed bookings" });
+  }
+
+  // Book the event
+  const bookingSQL = `
+    INSERT INTO Bookings (user_id, event_id, confirmed)
+    VALUES (?, ?, 0)
+  `;
+  await db.promise().query(bookingSQL, [user_id, event_id]);
+
+  res.status(201).json({ message: "Event booked successfully" });
+});
+
 module.exports = {
   interact_post,
+  bookEvent
 };
