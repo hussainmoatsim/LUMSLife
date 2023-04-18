@@ -59,6 +59,17 @@ export async function removeStudentAccount(Student_id) {
   return await axios.post(`${url}/general/removeStudentAccount`, request)
 }
 
+// search for relevant societies, events and posts using search_string
+// returns a json object containing three lists: "societyList", "postsList" and "eventsList"
+export async function search(searchString) {
+
+    const request = {
+        "searchString": searchString
+    }
+
+    return await axios.post(`${url}/general/search`, request)
+}
+
 //Remove a society account associated with a specific society id
 // return a json object containing is_succesful / error_message
 export async function removeSocietyAccount(Society_id) {
