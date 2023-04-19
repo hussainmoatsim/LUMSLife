@@ -22,5 +22,6 @@ router.use("/events/attend", eventsPageController);
 router.get("/api/society/view_bookings", societyController.view_bookings);
 router.put("/api/society/confirm_booking", societyController.confirm_booking);
 router.post("/api/student/create_booking", studentController.bookEvent);
+router.post("/student/applyForSociety", studentController.applyForSociety);
     
 module.exports = router;

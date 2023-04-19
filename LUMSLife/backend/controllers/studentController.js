@@ -51,7 +51,32 @@ const bookEvent = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "Event booked successfully" });
 });
 
+const applyForSociety = asyncHandler(async (req, res) => {
+  const { user_id, society_id } = req.body;
+
+  const checkMembershipSQL = `
+    SELECT COUNT(*) as membership_count
+    FROM Society_membership
+    WHERE Society_id = ? AND member_id = ?
+  `;
+  const [membershipResult] = await db.promise().query(checkMembershipSQL, [society_id, user_id]);
+  const membershipCount = membershipResult[0].membership_count;
+
+  if (membershipCount > 0) {
+    return res.status(400).json({ message: "You have already applied for this society." });
+  }
+
+  const applySQL = `
+    INSERT INTO Society_membership (Society_id, member_id, joined)
+    VALUES (?, ?, 0)
+  `;
+  await db.promise().query(applySQL, [society_id, user_id]);
+
+  res.status(201).json({ message: "Society application submitted successfully" });
+});
+
 module.exports = {
   interact_post,
-  bookEvent
+  bookEvent,
+  applyForSociety
 };
