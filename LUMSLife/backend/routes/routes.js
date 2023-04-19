@@ -19,5 +19,8 @@ router.use("/events/info", eventsPageController);
 router.use("/events/attendance", eventsPageController);
 router.use("/events/create", eventsPageController);
 router.use("/events/attend", eventsPageController);
+router.get("/api/society/view_bookings", societyController.view_bookings);
+router.put("/api/society/confirm_booking", societyController.confirm_booking);
+router.post("/api/student/create_booking", studentController.bookEvent);
     
 module.exports = router;

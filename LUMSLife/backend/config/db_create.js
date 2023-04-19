@@ -54,6 +54,13 @@ const eventAttendanceTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
   ".Event_attendance (event_id int NOT NULL, user_id int NOT NULL, PRIMARY KEY (event_id, user_id), FOREIGN KEY (event_id) REFERENCES Events(events_id), FOREIGN KEY (user_id) REFERENCES User(User_id))";
+const bookingsTable =
+  "CREATE TABLE IF NOT EXISTS " +
+  process.env.DATABASE +
+  ".Bookings (booking_id int NOT NULL AUTO_INCREMENT, event_id int NOT NULL, user_id int NOT NULL, confirmed bool, PRIMARY KEY (booking_id), FOREIGN KEY (event_id) REFERENCES Events(events_id), FOREIGN KEY (user_id) REFERENCES User(User_id))";
+
+
+
 
 function createTable(CreateQuerry) {
   db.query(CreateQuerry, (err, result) => {
@@ -89,6 +96,7 @@ db.connect((error) => {
           createTable(interactionsTable);
           createTable(eventsTable);
           createTable(eventAttendanceTable);
+          createTable(bookingsTable);
         }
       }
     );
