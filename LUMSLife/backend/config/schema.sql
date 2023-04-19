@@ -4,7 +4,7 @@ User_type int
 name string
 email string
 password_hash string
-posts_id int
+
 
 Indexes {
 (User_id) [pk]
@@ -14,6 +14,8 @@ Indexes {
 Table Student {
 User_id int
 Student_id int
+cv string
+about_me string
 
 Indexes {
 (Student_id) [pk]
@@ -67,6 +69,8 @@ Table Posts {
 Table Society_membership {
   Society_id int
   member_id int
+  society_name string
+  position string
   joined bool
 }
 
@@ -80,6 +84,7 @@ Table Interactions{
 table events{
   events_id int
   name string
+  description string
   society_id string
   date date
 }
