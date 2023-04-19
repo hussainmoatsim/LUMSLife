@@ -12,9 +12,9 @@ const StudentProfile = () => {
       <div className="student-profile">
         <div className="main-content">
           <h1>About Me</h1>
-          {/* Include About Me content here */}
+          {/* Include About Me content here once db updated*/}
           <h1>My Societies</h1>
-          {/* Include My Societies content table here */}
+          {/* Include My Societies content table here once db updated*/}
         </div>
         <div className="side-menu">
           <nav>
