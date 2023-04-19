@@ -33,11 +33,11 @@ const adminTable =
 const societyTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society (Society_id int NOT NULL AUTO_INCREMENT, membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))";
+  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255) ,  membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))";
 const postsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Posts (posts_id int NOT NULL AUTO_INCREMENT, title varchar(255), date_time DATETIME, category varchar(255), description TEXT, location varchar(255), User_id int, PRIMARY KEY (posts_id), FOREIGN KEY (user_id) REFERENCES User(User_id))";
+  ".Posts (posts_id int NOT NULL AUTO_INCREMENT, title varchar(255), date_time DATETIME, category varchar(255), description TEXT, location varchar(255), User_id int, Society_id int ,  PRIMARY KEY (posts_id), FOREIGN KEY (user_id) REFERENCES User(User_id))";
 const societyMembershipTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +

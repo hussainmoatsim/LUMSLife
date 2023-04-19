@@ -9,10 +9,11 @@ const create_post = asyncHandler(async (req, res) => {
     eventDescription,
     eventLocation,
     user_id,
+    society_id, // added society_id
   } = req.body;
 
-  const sql = `INSERT INTO Posts (title, date_time, category, description, location, user_id) 
-             VALUES (?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO Posts (title, date_time, category, description, location, user_id, society_id) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)`; // added society_id
 
   const values = [
     title,
@@ -21,6 +22,7 @@ const create_post = asyncHandler(async (req, res) => {
     eventDescription,
     eventLocation,
     user_id,
+    society_id, // added society_id
   ];
 
   db.query(sql, values, (err, result) => {
