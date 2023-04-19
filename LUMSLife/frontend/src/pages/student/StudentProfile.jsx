@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
-import ProfileEdit from './ProfileEdit';
-import CVAboutMe from './CVAboutMe';
-import MySocieties from './MySocieties';
-import MyApplications from './MyApplications';
-import '../CSS/StudentProfile.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import ProfileEdit from "./ProfileEdit.jsx";
+import CVAboutMe from "./CVAboutMe.jsx";
+import MySocieties from "./MySocieties.jsx";
+import MyApplications from "./MyApplications.jsx";
+import "../CSS/StudentProfile.css";
 
 const StudentProfile = () => {
   return (
