@@ -117,3 +117,28 @@ export async function updateSociety(req, response) {
 
     connection.end()
 }
+export async function getSocietyInfo(req, response) {
+
+    let User_id = req.body.User_id
+
+    let getInfo = `SELECT * FROM societyTable WHERE User_id = ?`
+    let fields = [User_id]
+
+    let connection = validateConnection()
+    connection.query(getInfo, [fields], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                isSuccessful: true,
+                society_name: data.society_name,
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
