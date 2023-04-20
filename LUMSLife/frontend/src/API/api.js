@@ -88,3 +88,12 @@ export async function getAccountInfo(User_id) {
 
     return await axios.post(`${url}/general/getAccountInfo`, request)
 }
+
+export async function deleteUserAccount(User_id) {
+    
+    const request = {
+        User_id: User_id
+    }
+
+    return await axios.post(`${url}/general/deleteUserAccount`, request)
+}
