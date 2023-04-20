@@ -6,7 +6,8 @@
   "scripts": {
     "server": "cd backend && npm run server",
     "app": "cd frontend && npm run start",
-    "start": "cd frontend && npm run start"
+   
+    "start": "cd backend && node server.js"
   },
   "repository": {
     "type": "git",

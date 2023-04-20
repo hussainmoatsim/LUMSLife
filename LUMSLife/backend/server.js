@@ -7,6 +7,12 @@ const router = require("./routes/routes.js");
 // creating the server
 const app = express();
 
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 // enabling cors to allow for communication between different servers
 app.use(cors());
 
