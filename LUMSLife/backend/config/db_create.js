@@ -17,11 +17,11 @@ let db = mysql.createConnection({
 const userTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".User (User_id int NOT NULL AUTO_INCREMENT, User_type varchar(255), name varchar(255), email varchar(255), password_hash varchar(255), PRIMARY KEY (User_id))";
+  ".User (User_id int NOT NULL AUTO_INCREMENT, User_type varchar(255), name varchar(255), email varchar(255), password varchar(50), password_hash varchar(255), PRIMARY KEY (User_id))";
 const studentTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, cv varchar(255) , about_me varchar(255) , PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
+  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, student_name varchar(255), cv varchar(255), about_me varchar(255) , PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const societyMemberTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
@@ -33,7 +33,7 @@ const adminTable =
 const societyTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255) ,  membership int, PRIMARY KEY (Society_id))";
+  ".Society (Society_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, society_name varchar(255) ,  membership int, PRIMARY KEY (Society_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const postsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
