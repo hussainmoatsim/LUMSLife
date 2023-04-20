@@ -47,3 +47,38 @@ export async function removeStudentAccount(req, response) {
         }
     })
 }
+export async function updateStudent(req, response) {
+
+    let Student_id = req.body.Student_id
+    let student_name = req.body.student_name
+    let cv = req.body.cv
+    let about_me = req.body.about_me
+
+    let updateStudent = `UPDATE studentTable SET student_name = ?, cv = ?, about_me = ? WHERE Student_id= = ?`
+    let fields = [student_name, cv, about_me, Student_id]
+
+    console.log(req.body)
+    let connection = validateConnection()
+    connection.query(updateStudent, fields, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Your info couldn't be updated"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+    connection.end()
+}
