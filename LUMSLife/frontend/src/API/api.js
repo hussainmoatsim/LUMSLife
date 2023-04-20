@@ -64,7 +64,7 @@ export async function removeStudentAccount(Student_id) {
 export async function search(searchString) {
 
     const request = {
-        "searchString": searchString
+        searchString: searchString
     }
 
     return await axios.post(`${url}/general/search`, request)
@@ -144,4 +144,12 @@ export async function getSocietyInfo(User_id) {
     }
 
     return await axios.post(`${url}/society/getSocietyInfo`, request)
+}
+export async function adminSearch(searchString) {
+
+    const request = {
+        searchString: searchString
+    }
+
+    return await axios.post(`${url}/general/adminSearch`, request)
 }
