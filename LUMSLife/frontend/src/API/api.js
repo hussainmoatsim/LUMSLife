@@ -97,3 +97,13 @@ export async function deleteUserAccount(User_id) {
 
     return await axios.post(`${url}/general/deleteUserAccount`, request)
 }
+export async function updateUser(User_id, newEmail, newPassword) {
+
+    const request = {
+        User_id: User_id,
+        newEmail: newEmail,
+        newPassword : newPassword
+    }
+
+    return await axios.post(`${url}/general/updateUser`, request)
+}
