@@ -14,6 +14,7 @@ import Navbar from "./pages/Navbar.js";
 import VerifyEmail from "./pages/VerifyEmail";
 import CreatePost from "./pages/society/CreatePost";
 import PostDetails from "./pages/Homepage/PostDetails";
+import StudentProfile from "./pages/student/StudentProfile"; // Import StudentProfile component
 import { getHomeFeed } from "../src/API/api";
 
 function App() {
@@ -32,18 +33,7 @@ function App() {
     homeFeed,
   };
 
-  // this useEffect is not working desireably, so need to be fixes
-
   useEffect(() => {
-    // const savedState = JSON.parse(localStorage.getItem("userContext"));
-    // console.log(savedState);
-    // if (savedState) {
-    //   userContext.setAccountID(savedState.accountID);
-    //   userContext.setAccountType(savedState.accountType);
-    //   userContext.setAccountName(savedState.accountName);
-    // } else {
-    //   localStorage.setItem("userContext", JSON.stringify(userContext));
-    // }
     const fetchData = async () => {
       const posts = await getHomeFeed();
       console.log(posts.data);
@@ -73,6 +63,18 @@ function App() {
             ></Route>
             <Route path="/verify-email" element={<VerifyEmail />}></Route>
             <Route path="/posts/:id" element={<PostDetails />}></Route>
+            <Route
+              path="/profile"
+              element={
+                accountID ? <StudentProfile userId={accountID} /> : <Login />
+              } // Add StudentProfile component
+            ></Route>
+            <Route
+              path="/profile/*"
+              element={
+                accountID ? <StudentProfile userId={accountID} /> : <Login />
+              }
+            />
           </Routes>
         </UserContext.Provider>
       </div>

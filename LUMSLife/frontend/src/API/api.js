@@ -19,7 +19,7 @@ export async function signup(email, password, username, accountType) {
 
 // login to an existing account with the specified email and password
 // return a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function login(email, password,accountType) {
+export async function login(email, password, accountType) {
   const request = {
     email: email,
     password: password,
@@ -81,6 +81,37 @@ export async function interact_post(post_id, user_id, liked, comment) {
     liked: liked,
     comment: comment,
   };
-
   return await axios.post(`${url}/student/interact_post`, request);
+}
+
+export async function editStudentInfo(id, name, email, password) {
+  const request = {
+    id: id,
+    name: name,
+    email: email,
+    password: password,
+  };
+
+  return await axios.put(`${url}/student/profile/editInfo`, request);
+}
+
+// Get student CV and About Me content
+export async function getStudentCVAboutMe(id) {
+  return await axios.get(`${url}/student/profile/cv-about-me`, {
+    params: { id },
+  });
+}
+
+// Get student's societies
+export async function getStudentSocieties(id) {
+  return await axios.get(`${url}/student/profile/mySocities`, {
+    params: { id },
+  });
+}
+
+// Get student's applications
+export async function getStudentApplications(id) {
+  return await axios.get(`${url}/student/profile/myApplications`, {
+    params: { id },
+  });
 }
