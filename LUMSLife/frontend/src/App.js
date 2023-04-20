@@ -43,8 +43,8 @@ function App() {
               element={accountID ? <CreatePost /> : <Login />}
             ></Route>
             <Route path="/verify-email" element={<VerifyEmail />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>{" "}
-            <Route path="/society-profile" component={SocietyProfile} />
+            <Route path="/profile/*" element={<Profile />}></Route>{" "}
+            <Route path="/society-profile" element={<SocietyProfile />} />
             {/* Add the Profile route */}
           </Routes>
         </div>

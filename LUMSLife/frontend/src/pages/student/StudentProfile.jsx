@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Link, Routes } from "react-router-dom";
+import { Route, Link, Routes, Outlet } from "react-router-dom";
 import ProfileEdit from "./ProfileEdit.jsx";
 import CVAboutMe from "./CVAboutMe.jsx";
 import MySocieties from "./MySocieties.jsx";
@@ -10,10 +10,24 @@ const StudentProfile = () => {
   return (
     <div className="student-profile">
       <div className="main-content">
-        <h1>About Me</h1>
-        {/* Include About Me content here once db updated*/}
-        <h1>My Societies</h1>
-        {/* Include My Societies content table here once db updated*/}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <h1>About Me</h1>
+                {/* Include About Me content here once db updated*/}
+                <h1>My Societies</h1>
+                {/* Include My Societies content table here once db updated*/}
+              </div>
+            }
+          />
+          <Route path="/edit" element={<ProfileEdit />} />
+          <Route path="/cv-about-me" element={<CVAboutMe />} />
+          <Route path="/my-societies" element={<MySocieties />} />
+          <Route path="/my-applications" element={<MyApplications />} />
+        </Routes>
+        <Outlet />
       </div>
       <div className="side-menu">
         <nav>
@@ -33,12 +47,6 @@ const StudentProfile = () => {
           </ul>
         </nav>
       </div>
-      <Routes>
-        <Route path="/profile/edit" element={<ProfileEdit />} />
-        <Route path="/profile/cv-about-me" element={<CVAboutMe />} />
-        <Route path="/profile/my-societies" element={<MySocieties />} />
-        <Route path="/profile/my-applications" element={<MyApplications />} />
-      </Routes>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Form, Stack, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// add css
+import "../CSS/ProfileEdit.css";
 
 function ProfileEdit() {
   const [email, setEmail] = useState("");
