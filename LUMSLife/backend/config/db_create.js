@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let db = mysql.createConnection({
   database: process.env.DATABASE,
   host: process.env.HOST,
-  // user: process.env.USER,
-  // password: process.env.PASSWORD
-  user: 'root',
-  password: 'pass'
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  // user: 'root',
+  // password: 'pass'
 });
 
 const userTable =
@@ -58,9 +58,6 @@ const bookingsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
   ".Bookings (booking_id int NOT NULL AUTO_INCREMENT, event_id int NOT NULL, user_id int NOT NULL, confirmed bool, PRIMARY KEY (booking_id), FOREIGN KEY (event_id) REFERENCES Events(events_id), FOREIGN KEY (user_id) REFERENCES User(User_id))";
-
-
-
 
 function createTable(CreateQuerry) {
   db.query(CreateQuerry, (err, result) => {
