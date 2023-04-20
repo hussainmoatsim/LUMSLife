@@ -3,6 +3,7 @@ const { json, urlencoded } = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv").config({ path: "../.env" });
 const router = require("./routes/routes.js");
+const path = require("path");
 
 // creating the server
 const app = express();
