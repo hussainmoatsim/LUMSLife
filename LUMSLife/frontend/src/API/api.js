@@ -6,10 +6,11 @@ export let url = `http://localhost:3000/api`;
 
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function signup(email, password, accountType) {
+export async function signup(email, password, username, accountType) {
   const request = {
     email: email,
     password: password,
+    name: username,
     accountType: accountType,
   };
 
@@ -36,7 +37,7 @@ export async function validateEmail(email) {
 }
 
 export async function createPost(formData) {
-  return await axios.post(`${url}/general/create-post`, formData);
+  return await axios.post(`${url}/society/event/create-post`, formData);
 }
 
 export async function emailVerification(email, otp) {
@@ -54,7 +55,7 @@ export async function removeStudentAccount(Student_id) {
     Student_id: Student_id,
   };
 
-  return await axios.post(`${url}/general/removeStudentAccount`, request);
+  return await axios.post(`${url}/admin/removeStudentAccount`, request);
 }
 
 //Remove a society account associated with a specific society id
@@ -64,5 +65,21 @@ export async function removeSocietyAccount(Society_id) {
     Society_id: Society_id,
   };
 
-  return await axios.post(`${url}/general/removeSocietyAccount`, request);
+  return await axios.post(`${url}/admin/removeSocietyAccount`, request);
+}
+
+//Get all posts from the backend for homepage
+export async function getHomeFeed() {
+  return await axios.get(`${url}/general/getHomeFeed`);
+}
+
+export async function interact_post(post_id, user_id, liked, comment) {
+  const request = {
+    post_id: post_id,
+    user_id: user_id,
+    liked: liked,
+    comment: comment,
+  };
+
+  return await axios.post(`${url}/student/interact_post`, request);
 }

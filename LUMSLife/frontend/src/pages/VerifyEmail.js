@@ -38,7 +38,12 @@ const VerifyEmail = () => {
     if (userOtp != otp) {
       setError("Invalid OTP");
     } else {
-      const res = await signup(state.email, state.password, state.accountType);
+      const res = await signup(
+        state.email,
+        state.password,
+        state.username,
+        state.accountType
+      );
       user.setAccountID(res.data.accountID);
       user.setAccountType(state.accountType);
       navigate("/");

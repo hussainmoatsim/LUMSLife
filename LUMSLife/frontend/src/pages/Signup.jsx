@@ -17,6 +17,7 @@ const Signup = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [accountType, setAccountType] = useState("student");
   const [error, setError] = useState("");
 
@@ -35,7 +36,12 @@ const Signup = () => {
       let res = await validateEmail(email);
       if (res.data.isSuccessful) {
         navigate(`/verify-email`, {
-          state: { email: email, password: password, accountType: accountType },
+          state: {
+            email: email,
+            password: password,
+            username: username,
+            accountType: accountType,
+          },
         });
       } else {
         setError(res.data.errorMessage);
@@ -71,6 +77,18 @@ const Signup = () => {
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
+                }}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="">
+              <Form.Control
+                type="text"
+                placeholder="Name"
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
                 }}
                 required
               />

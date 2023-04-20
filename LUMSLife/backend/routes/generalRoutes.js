@@ -8,4 +8,5 @@ router.post("/signup", generalController.signup);
 router.post("/login", generalController.login);
 router.post("/validateEmail", generalController.validateEmail);
 router.post("/verify-email", generalController.email_verification);
+router.get("/getHomeFeed", generalController.getHomeFeed);
 module.exports = router;

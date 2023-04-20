@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv").config({ path: "../../.env" });
@@ -19,7 +19,7 @@ const userTable =
 const studentTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
+  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, cv varchar(255) , about_me varchar(255) , PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const societyMemberTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
@@ -31,7 +31,7 @@ const adminTable =
 const societyTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society (Society_id int NOT NULL AUTO_INCREMENT, membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))";
+  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255), membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))";
 const postsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
@@ -39,7 +39,7 @@ const postsTable =
 const societyMembershipTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society_membership (Society_id int NOT NULL, member_id int NOT NULL, joined bool, PRIMARY KEY (Society_id, member_id), FOREIGN KEY (Society_id) REFERENCES Society(Society_id), FOREIGN KEY (member_id) REFERENCES Society_member(member_id))";
+  ".Society_membership (Society_id int NOT NULL, member_id int NOT NULL , society_name varchar(255) ,  position varchar(255) , joined bool, PRIMARY KEY (Society_id, member_id), FOREIGN KEY (Society_id) REFERENCES Society(Society_id), FOREIGN KEY (member_id) REFERENCES Society_member(member_id))";
 const interactionsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
@@ -47,7 +47,7 @@ const interactionsTable =
 const eventsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Events (events_id int NOT NULL AUTO_INCREMENT, name varchar(255), society_id int, date date, PRIMARY KEY (events_id), FOREIGN KEY (society_id) REFERENCES Society(Society_id))";
+  ".Events (events_id int NOT NULL AUTO_INCREMENT, name varchar(255), description varchar(255), society_id int, date date, PRIMARY KEY (events_id), FOREIGN KEY (society_id) REFERENCES Society(Society_id))";
 const eventAttendanceTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +

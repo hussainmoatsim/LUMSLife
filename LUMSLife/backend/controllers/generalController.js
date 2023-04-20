@@ -2,6 +2,7 @@ const { createConnection } = require("mysql2");
 const sha1 = require("sha1");
 const nodemailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
+const { db } = require("../config/db_create");
 const dotenv = require("dotenv").config({ path: "../../.env" });
 
 const validateConnection = () => {
@@ -62,6 +63,7 @@ const signup = asyncHandler(async (req, response) => {
   let email = req.body.email;
   let password = sha1(req.body.password);
   let accountType = req.body.accountType;
+  let name = req.body.name;
 
   let connection = validateConnection();
 
@@ -85,8 +87,8 @@ const signup = asyncHandler(async (req, response) => {
         response.send(returnMessage);
         connection.end();
       } else {
-        let insertQuery = `INSERT INTO User (User_type, email, password_hash) VALUES (?)`;
-        let values = [accountType, email, password];
+        let insertQuery = `INSERT INTO User (User_type, email, name, password_hash) VALUES (?)`;
+        let values = [accountType, email, name, password];
         //inserting into User_type using variable accountType
         connection.query(insertQuery, [values], (err, res) => {
           if (err) {
@@ -195,9 +197,48 @@ const email_verification = asyncHandler(async (req, res) => {
     }
   });
 });
+
+const getHomeFeed = asyncHandler(async (req, res) => {
+  try {
+    // Get all posts with the count of likes and comments
+    const postsQuery = `
+    SELECT p.posts_id, p.title, p.description, p.user_id, p.date_time, p.location,
+      SUM(CASE WHEN i.liked = true THEN 1 ELSE 0 END) as likes_count,
+      COUNT(i.comment) as comments_count
+    FROM Posts p
+    LEFT JOIN Interactions i ON p.posts_id = i.post_id
+    JOIN User u ON p.user_id = u.User_id
+    GROUP BY p.posts_id, u.name
+    ORDER BY p.posts_id DESC
+    `;
+    const [posts, _] = await db.promise().query(postsQuery);
+
+    // Get all comments for each post
+
+    const commentsQuery = ` 
+      SELECT i.post_id, i.comment, i.user_id, u.name as author
+      FROM Interactions i
+      JOIN User u ON i.user_id = u.User_id
+      WHERE i.comment IS NOT NULL
+    `;
+    const [comments, __] = await db.promise().query(commentsQuery);
+
+    const postsWithComments = posts.map((post) => {
+      const postComments = comments.filter((c) => c.post_id === post.posts_id);
+      return { ...post, comments: postComments };
+    });
+
+    res.send(postsWithComments);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error retrieving home feed");
+  }
+});
+
 module.exports = {
   signup,
   login,
   validateEmail,
   email_verification,
+  getHomeFeed,
 };
