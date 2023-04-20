@@ -41,7 +41,7 @@ const postsTable =
 const societyMembershipTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society_membership (Society_id int NOT NULL, member_id int NOT NULL , society_name varchar(255) ,  position varchar(255) , joined bool, PRIMARY KEY (Society_id, member_id), FOREIGN KEY (Society_id) REFERENCES Society(Society_id), FOREIGN KEY (member_id) REFERENCES Society_member(member_id))";
+  ".Society_membership (Society_id int NOT NULL, User_id int NOT NULL , society_name varchar(255) ,  position varchar(255) , joined bool, PRIMARY KEY (Society_id, User_id), FOREIGN KEY (Society_id) REFERENCES Society(Society_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const interactionsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +

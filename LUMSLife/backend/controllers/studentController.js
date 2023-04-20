@@ -53,11 +53,12 @@ const bookEvent = asyncHandler(async (req, res) => {
 
 const applyForSociety = asyncHandler(async (req, res) => {
   const { user_id, society_id } = req.body;
+  console.log(`user_id: ${user_id}, society_id: ${society_id}`);
 
   const checkMembershipSQL = `
     SELECT COUNT(*) as membership_count
     FROM Society_membership
-    WHERE Society_id = ? AND member_id = ?
+    WHERE Society_id = ? AND User_id = ?
   `;
   const [membershipResult] = await db.promise().query(checkMembershipSQL, [society_id, user_id]);
   const membershipCount = membershipResult[0].membership_count;
@@ -67,7 +68,7 @@ const applyForSociety = asyncHandler(async (req, res) => {
   }
 
   const applySQL = `
-    INSERT INTO Society_membership (Society_id, member_id, joined)
+    INSERT INTO Society_membership (Society_id, User_id, joined)
     VALUES (?, ?, 0)
   `;
   await db.promise().query(applySQL, [society_id, user_id]);

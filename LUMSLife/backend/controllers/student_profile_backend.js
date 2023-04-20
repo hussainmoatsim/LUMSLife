@@ -35,7 +35,7 @@ app.get('/api/profile/cv-about-me', function(req, res) {
 
 app.get('/api/profile/my-societies', function(req, res) {
   // Handle the request to retrieve the student's society information
-  const sql = 'SELECT society_name, position FROM society_membership WHERE member_id = ?';
+  const sql = 'SELECT society_name, position FROM society_membership WHERE User_id = ?';
   const values = [req.query.id];
   db.query(sql, values, function(err, result) {
     if (err) {
@@ -47,7 +47,7 @@ app.get('/api/profile/my-societies', function(req, res) {
 
 app.get('/api/profile/my-applications', function(req, res) {
   // Handle the request to retrieve the student's society application information
-  const sql = 'SELECT society_name, position FROM society_membership WHERE member_id = ? and joined = false'; //use joined = false to get applications from society_membership
+  const sql = 'SELECT society_name, position FROM society_membership WHERE User_id = ? and joined = false'; //use joined = false to get applications from society_membership
   const values = [req.query.id];
   db.query(sql, values, function(err, result) {
     if (err) {
@@ -95,7 +95,7 @@ app.get('/api/profile/cv-about-me', function(req, res) {
 
 app.get('/api/profile/my-societies', function(req, res) {
   // Handle the request to retrieve the student's society information
-  const sql = 'SELECT society_name, position FROM society_membership WHERE student_id = ?';
+  const sql = 'SELECT society_name, position FROM society_membership WHERE User_id = ?';
   const values = [req.query.id];
   db.query(sql, values, function(err, result) {
     if (err) {

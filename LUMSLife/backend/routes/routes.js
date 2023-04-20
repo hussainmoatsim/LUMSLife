@@ -21,6 +21,8 @@ router.get("/society/view_bookings", societyController.view_bookings);
 router.put("/society/confirm_booking", societyController.confirm_booking);
 router.post("/create-post", societyController.create_post);
 router.get("/society/joined", societyController.getJoinedSocieties);
+router.get("/society/applications", societyController.viewApplications);
+router.post("/society/accept_application", societyController.acceptApplication);
 
 router.post("/student/create_booking", studentController.bookEvent);
 router.post("/student/applyForSociety", studentController.applyForSociety);
