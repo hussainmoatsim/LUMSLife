@@ -222,6 +222,50 @@ export async function search(req, response) {
 }
   })}
 
+export async function adminSearch(req, response) {
+
+  let searchString = req.body.searchString
+  
+
+  let querySociety = `SELECT * FROM Society WHERE society_name LIKE ? OR Society_id LIKE ?`
+  let valuesSociety = [`${searchString}%`, `${searchString}%`]
+
+  let queryStudents = `SELECT * FROM Student WHERE student_name LIKE ? OR cv LIKE ? OR about_me LIKE ? OR Student_id LIKE ?`
+  let valuesStudents = [`${searchString}%`, `${searchString}%`, `${searchString}%`, `${searchString}%`]
+
+  let connection = validateConnection()
+
+  connection.query(querySociety, valuesSociety, (err, res) => {
+      if (err) {
+          console.log(err)
+
+      } else {
+          let societyList = res
+          connection.query(queryStudents, valuesStudents, (err, res) => {
+              
+              if (err) {
+                  console.log(err)
+      
+              } else {
+                        let studentList = res
+                  console.log(societyList)
+                  console.log(studentList)
+                  let returnMessage = {
+                      societyList: societyList,
+                      studentList: studentList
+
+                  }
+                  
+                  response.send(returnMessage)
+                  connection.end()
+              }
+          })
+      }
+  })
+
+}
+
+
 export async function getAccountInfo(req, response) {
     let User_id = req.body.User_id
 
@@ -352,5 +396,6 @@ module.exports = {
   getAccountInfo,
   deleteUserAccount,
   updateUser,
+  adminSearch
   
 };
