@@ -25,7 +25,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let res = await login(email, password);
+    let res = await login(email, password, accountType);
     if (res.data.isSuccessful) {
       user.setAccountID(res.data.accountID);
       user.setAccountType(res.data.accountType);
