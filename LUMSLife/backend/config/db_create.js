@@ -33,7 +33,7 @@ const adminTable =
 const societyTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255) ,  membership int, posts_id int, PRIMARY KEY (Society_id), FOREIGN KEY (posts_id) REFERENCES Posts(posts_id))";
+  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255) ,  membership int, PRIMARY KEY (Society_id))";
 const postsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
@@ -49,7 +49,7 @@ const interactionsTable =
 const eventsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Events (events_id int NOT NULL AUTO_INCREMENT, name varchar(255), description varchar(255), society_id int, date date, PRIMARY KEY (events_id), FOREIGN KEY (society_id) REFERENCES Society(Society_id))";
+  ".Events (events_id int NOT NULL AUTO_INCREMENT, name varchar(255), description varchar(255), location varchar(255) , society_id int, date date, PRIMARY KEY (events_id), FOREIGN KEY (society_id) REFERENCES Society(Society_id))";
 const eventAttendanceTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +

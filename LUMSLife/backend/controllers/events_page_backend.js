@@ -5,7 +5,7 @@ const { db } = require("../config/db_create");
 
 app.get('/api/event/info', function(req, res) {
   // Handle the request to retrieve event information
-  const sql = 'SELECT name, description, date FROM Events WHERE events_id = ?';
+  const sql = 'SELECT name, description,location, date FROM Events WHERE events_id = ?';
   const values = [req.query.event_id];
   db.query(sql, values, function(err, result) {
     if (err) {

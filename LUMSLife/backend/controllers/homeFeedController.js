@@ -2,6 +2,15 @@ const { db } = require("../config/db_create");
 
 exports.getHomeFeed = async (req, res) => {
   try {
+    // Get all events
+    const eventsQuery = `
+      SELECT e.events_id, e.name, e.description, e.date, e.location, e.society_id, s.society_name
+      FROM Events e
+      JOIN Society s ON e.society_id = s.society_id
+      ORDER BY e.events_id DESC
+    `;
+    const [events, __e] = await db.promise().query(eventsQuery);
+
     // Get all posts with the count of likes and comments, and include society_id and society name
     const postsQuery = `
     SELECT p.posts_id, p.title, p.description, p.user_id, p.date_time, p.society_id, s.society_name,
@@ -30,7 +39,7 @@ exports.getHomeFeed = async (req, res) => {
       return { ...post, comments: postComments };
     });
 
-    res.send(postsWithComments);
+    res.send({ posts: postsWithComments, events: events });
   } catch (err) {
     console.log(err);
     res.status(500).send("Error retrieving home feed");
