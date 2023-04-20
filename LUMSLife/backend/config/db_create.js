@@ -17,7 +17,7 @@ let db = mysql.createConnection({
 const userTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".User (User_id int NOT NULL AUTO_INCREMENT, User_type varchar(255), name varchar(255), email varchar(255), password_hash varchar(255), PRIMARY KEY (User_id))";
+  ".User (User_id int NOT NULL AUTO_INCREMENT, User_type varchar(255), name varchar(255), email varchar(255), password varchar(50), password_hash varchar(255), PRIMARY KEY (User_id))";
 const studentTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
