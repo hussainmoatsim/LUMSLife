@@ -34,15 +34,16 @@ const Signup = () => {
     } else {
       let res = await validateEmail(email);
       if (res.data.isSuccessful) {
-        navigate(`/verify-email`, {
-          state: { email: email, password: password, accountType: accountType },
-        });
+        const res = await signup(email, password, username, accountType);
+        user.setAccountID(res.data.accountID);
+        user.setAccountType(accountType);
+        navigate(`/`);
       } else {
         setError(res.data.errorMessage);
       }
     }
   };
-
+  
   return (
     <div className="form">
       <Container>
