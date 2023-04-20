@@ -74,6 +74,46 @@ function createTable(CreateQuerry) {
   });
 }
 
+function insertAdminUser(name, email, password, password_hash) {
+  // Insert a new user into the User table
+  const insertUserQuery = `
+    INSERT INTO User (User_type, name, email, password, password_hash)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  const userData = ['admin', name, email, password, password_hash];
+
+  db.query(insertUserQuery, userData, (err, userResult) => {
+    if (err) {
+      console.log("User insertion failed");
+      console.log(err);
+      return;
+    }
+    console.log("User inserted");
+    console.log(userResult);
+
+    // Get the User_id of the newly inserted user
+    const newUserId = userResult.insertId;
+
+    // Insert a new admin record into the Admin table with the obtained User_id
+    const insertAdminQuery = `
+      INSERT INTO Admin (User_id)
+      VALUES (?)
+    `;
+    const adminData = [newUserId];
+
+    db.query(insertAdminQuery, adminData, (err, adminResult) => {
+      if (err) {
+        console.log("Admin insertion failed");
+        console.log(err);
+        return;
+      }
+      console.log("Admin inserted");
+      console.log(adminResult);
+    });
+  });
+}
+
+
 db.connect((error) => {
   // console.log(connectionString);
   if (!error) {
@@ -97,6 +137,9 @@ db.connect((error) => {
           createTable(eventsTable);
           createTable(eventAttendanceTable);
           createTable(bookingsTable);
+
+
+          insertAdminUser("Admin", "admin@gmail.com", "test12345", "448ed7416fce2cb66c285d182b1ba3df1e90016d");
         }
       }
     );
