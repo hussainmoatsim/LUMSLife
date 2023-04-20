@@ -222,6 +222,39 @@ export async function search(req, response) {
 }
   })}
 
+export async function getAccountInfo(req, response) {
+    let User_id = req.body.User_id
+
+    let getData = `SELECT * FROM User WHERE User_id = ?`
+    let fields = [User_id]
+
+    let connection = validateConnection()
+    connection.query(getData, [fields], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Your request couldn't be processed"
+            }
+
+            response.send(returnMessage)
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                isSuccessful: true,
+                userID: data.User_id,
+                userType: data.User_type,
+                name: data.name,
+                email: data.email,
+                password: data.password
+            }
+
+            response.send(returnMessage)
+        }
+    })
+}
 
 const email_verification = asyncHandler(async (req, res) => {
   let user_email = req.body.email;
@@ -256,4 +289,7 @@ module.exports = {
   login,
   validateEmail,
   email_verification,
+  search,
+  getAccountInfo,
+  
 };
