@@ -23,6 +23,7 @@ export async function login(email, password) {
   const request = {
     email: email,
     password: password,
+    accountType: accountType,
   };
 
   return await axios.post(`${url}/general/login`, request);
