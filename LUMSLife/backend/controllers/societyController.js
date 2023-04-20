@@ -52,8 +52,37 @@ const create_post = asyncHandler(async (req, res) => {
   });
 });
 
+const view_bookings = asyncHandler(async (req, res) => {
+  const { event_id } = req.query;
+
+  const sql = `
+    SELECT u.User_id, u.name, u.email, b.confirmed
+    FROM Bookings b
+    JOIN User u ON b.user_id = u.User_id
+    WHERE b.event_id = ?
+  `;
+  const [bookings] = await db.promise().query(sql, [event_id]);
+
+  res.status(200).json({ bookings });
+});
+
+const confirm_booking = asyncHandler(async (req, res) => {
+  const { booking_id } = req.body;
+
+  const sql = `
+    UPDATE Bookings
+    SET confirmed = 1
+    WHERE id = ?
+  `;
+  await db.promise().query(sql, [booking_id]);
+
+  res.status(200).json({ message: "Booking confirmed" });
+});
+
 module.exports = {
   create_post,
+  view_bookings,
+  confirm_booking
 };
 
 export async function removeSocietyAccount(req, response) {

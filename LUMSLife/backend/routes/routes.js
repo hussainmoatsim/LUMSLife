@@ -24,6 +24,7 @@ router.post("/adminSearch", generalController.adminSearch)
 
 router.post('/removeSocietyAccount', societyController.removeSocietyAccount);
 router.post("/create-post", societyController.create_post);
+
 router.post('/updateSociety', societyController.updateSociety);
 router.post('/getSocietyInfo', societyController.getSocietyInfo);
 
@@ -32,6 +33,7 @@ router.post('/getSocietyInfo', societyController.getSocietyInfo);
 router.post('/removeStudentAccount', studentController.removeStudentAccount);
 router.post('/updateStudent', studentController.updateStudent);
 router.post('/getStudentInfo', studentController.getStudentInfo);
+
 
 router.get("/homefeed", homeFeedController.getHomeFeed);
 router.post("/interact-post", studentController.interact_post);
@@ -43,6 +45,5 @@ router.get("/api/society/view_bookings", societyController.view_bookings);
 router.put("/api/society/confirm_booking", societyController.confirm_booking);
 router.post("/api/student/create_booking", studentController.bookEvent);
 router.use("/api/student/profile", studentProfileController);
-
 
 module.exports = router;

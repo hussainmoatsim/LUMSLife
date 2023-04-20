@@ -1,0 +1,52 @@
+html,
+body {
+  height: 100%;
+}
+
+.society-profile {
+  display: flex;
+  height: 100%;
+  background-color: #fff;
+}
+
+.main-content {
+  flex: 7;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.main-content h1 {
+  font-size: 24px;
+}
+
+.sidebar {
+  flex: 3;
+  padding: 20px;
+  background-color: #f0f0f0;
+  height: 100%;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar nav ul li a:hover {
+  background-color: #333;
+  color: #fff;
+}
