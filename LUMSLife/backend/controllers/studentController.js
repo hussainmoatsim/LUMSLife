@@ -82,3 +82,30 @@ export async function updateStudent(req, response) {
 
     connection.end()
 }
+export async function getStudentInfo(req, response) {
+
+    let User_id = req.body.User_id
+
+    let getInfo = `SELECT * FROM studentTable WHERE User_id = ?`
+    let values = [User_id]
+
+    let connection = validateConnection()
+    connection.query(getInfo, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                isSuccessful: true,
+                student_name: data.student_name,
+                cv: data.cv,
+                about_me: data.about_me,
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
