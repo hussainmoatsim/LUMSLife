@@ -84,3 +84,36 @@ export async function removeSocietyAccount(req, response) {
       }
   })
 }
+export async function updateSociety(req, response) {
+
+    let Society_id = req.body.Society_id
+    let society_name = req.body.society_name
+
+    let updateSociety = `UPDATE societyTable SET society_name = ? WHERE Society_id= = ?`
+    let fields = [society_name, Society_id]
+
+    console.log(req.body)
+    let connection = validateConnection()
+    connection.query(updateSociety, fields, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Society info couldn't be updated"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+    connection.end()
+}
