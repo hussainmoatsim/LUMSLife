@@ -64,5 +64,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+
+  "proxy": "https://guarded-river-13886.herokuapp.com"
 }
