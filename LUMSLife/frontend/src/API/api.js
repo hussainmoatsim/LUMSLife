@@ -107,3 +107,15 @@ export async function updateUser(User_id, newEmail, newPassword) {
 
     return await axios.post(`${url}/general/updateUser`, request)
 }
+
+export async function updateStudent(Student_id, student_name, cv, about_me) {
+
+    const request = {
+        Student_id: Student_id,
+        student_name: student_name,
+        cv: cv,
+        about_me: about_me
+    }
+
+    return await axios.post(`${url}/student/updateStudent`, request)
+}
