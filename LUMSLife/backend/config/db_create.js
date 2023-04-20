@@ -33,7 +33,7 @@ const adminTable =
 const societyTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Society (Society_id int NOT NULL AUTO_INCREMENT, society_name varchar(255) ,  membership int, PRIMARY KEY (Society_id))";
+  ".Society (Society_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, society_name varchar(255) ,  membership int, PRIMARY KEY (Society_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const postsTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
