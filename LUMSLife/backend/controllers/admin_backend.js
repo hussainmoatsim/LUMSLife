@@ -118,6 +118,76 @@ app.delete('/posts/:postId/comments/:commentId', (req, res) => {
       });
     });
   });
-
   
+  // for deleting a post
+  app.delete('/society/posts/:postId', (req, res) => {
+  const postId = req.params.postId;
+  
+  // Get the currently logged in user's ID from the request headers
+  const userId = req.headers['user-id'];
+
+  // Check if the logged in user is an admin
+  pool.query('SELECT * FROM Admin WHERE User_id = ?', [userId], (adminErr, adminResults) => {
+    if (adminErr) {
+      console.error('Error checking admin status: ', adminErr);
+      return res.status(500).json({ message: 'An error occurred while checking admin status.' });
+    }
+    
+    if (adminResults.length === 0) {
+      // If the user is not an admin, return a 403 Forbidden error
+      return res.status(403).json({ message: 'You are not authorized to perform this action.' });
+    }
+    
+    // Delete the society post by its ID
+    pool.query('DELETE FROM Posts WHERE posts_id = ?', [postId], (deleteErr, deleteResults) => {
+      if (deleteErr) {
+        console.error('Error deleting society post: ', deleteErr);
+        return res.status(500).json({ message: 'An error occurred while deleting the society post.' });
+      }
+      
+      // Return a success message to the client
+      return res.status(200).json({ message: 'Society post deleted successfully.' });
+    });
+  });
+});
+
+//for deleting a society event page
+app.delete('/society/events/:eventId', (req, res) => {
+  const eventId = req.params.eventId;
+  
+  // Check if the user is an admin
+  const userId = req.user.id; // assuming you have implemented authentication middleware
+  isAdmin(userId, (isAdminErr, isAdmin) => {
+    if (isAdminErr) {
+      console.error('Error checking admin status: ', isAdminErr);
+      return res.status(500).json({ message: 'An error occurred while checking admin status.' });
+    }
+    
+    if (!isAdmin) {
+      return res.status(403).json({ message: 'You do not have permission to delete society events.' });
+    }
+    
+    // Check if the event exists
+    pool.query('SELECT * FROM events WHERE events_id = ?', [eventId], (eventErr, eventResults) => {
+      if (eventErr) {
+        console.error('Error checking event existence: ', eventErr);
+        return res.status(500).json({ message: 'An error occurred while checking event existence.' });
+      }
+      
+      if (eventResults.length === 0) {
+        return res.status(404).json({ message: 'The event you are trying to delete does not exist.' });
+      }
+      
+      // Delete the event
+      pool.query('DELETE FROM events WHERE events_id = ?', [eventId], (deleteErr, deleteResults) => {
+        if (deleteErr) {
+          console.error('Error deleting event: ', deleteErr);
+          return res.status(500).json({ message: 'An error occurred while deleting event.' });
+        }
+        
+        return res.status(200).json({ message: 'Event deleted successfully.' });
+      });
+    });
+  });
+});
 
