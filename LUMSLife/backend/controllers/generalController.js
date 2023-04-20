@@ -255,6 +255,34 @@ export async function getAccountInfo(req, response) {
         }
     })
 }
+export async function deleteUserAccount(req, response) {
+
+    let User_id = req.body.User_id
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM User WHERE User_id = ?`
+    let fields = [User_id]
+
+    connection.query(deleteAccount, fields, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Account couldn't be deleted"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
 
 const email_verification = asyncHandler(async (req, res) => {
   let user_email = req.body.email;
@@ -291,5 +319,6 @@ module.exports = {
   email_verification,
   search,
   getAccountInfo,
+  deleteUserAccount,
   
 };
