@@ -4,7 +4,7 @@ import ProfileEdit from "./ProfileEdit.jsx";
 import CVAboutMe from "./CVAboutMe.jsx";
 import MySocieties from "./MySocieties.jsx";
 import MyApplications from "./MyApplications.jsx";
-// import ".../CSS/StudentProfile.css";
+import "../CSS/StudentProfile.css";
 
 const StudentProfile = () => {
   return (
