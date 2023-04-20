@@ -12,11 +12,23 @@ router.post("/login", generalController.login);
 router.post("/validateEmail", generalController.validateEmail);
 router.post("/verify-email", generalController.email_verification);
 router.post("/search", generalController.search);
+router.post("/getAccountInfo", generalController.getAccountInfo)
+router.post("/deleteUserAccount", generalController.deleteUserAccount)
+router.post("/updateUser", generalController.updateUser)
+
 
 router.post('/removeSocietyAccount', societyController.removeSocietyAccount);
 router.post("/create-post", societyController.create_post);
+router.post('/updateSociety', societyController.updateSociety);
+router.post('/getSocietyInfo', societyController.getSocietyInfo);
+
+
 
 router.post('/removeStudentAccount', studentController.removeStudentAccount);
+router.post('/updateStudent', studentController.updateStudent);
+router.post('/getStudentInfo', studentController.getStudentInfo);
+
+
 
 
 module.exports = router;
