@@ -68,7 +68,7 @@ const signup = asyncHandler(async (req, response) => {
   let emailValidation = `SELECT * FROM User WHERE email = ?`;
   let values = [email];
 
-  connection.query(emailValidation, values, (err, res) => {
+  connection.query(emailValidation, values, async (err, res) => {
     if (err) {
       let returnMessage = {
         isSuccessful: false,
@@ -87,8 +87,7 @@ const signup = asyncHandler(async (req, response) => {
       } else {
         let insertQuery = `INSERT INTO User (User_type, email, password_hash) VALUES (?)`;
         let values = [accountType, email, password];
-        //inserting into User_type using variable accountType
-        connection.query(insertQuery, [values], (err, res) => {
+        connection.query(insertQuery, [values], async (err, res) => {
           if (err) {
             let returnMessage = {
               isSuccessful: false,
@@ -99,7 +98,22 @@ const signup = asyncHandler(async (req, response) => {
 
             console.log(err);
           } else {
+            console.log("User inserted");
+            console.log(accountType);
+            //get user id from newly inserted user
             let User_id = res.insertId;
+            console.log(User_id);
+
+            if (accountType === "admin") {
+              await connection.promise().query(`INSERT INTO Admin (User_id , Admin_id) VALUES (? , ?)`, [User_id , User_id]);
+              console.log("Admin inserted");
+            } else if (accountType === "student") {
+              await connection.promise().query(`INSERT INTO Student (User_id , Student_id) VALUES (? , ?)`, [User_id , User_id]);
+              console.log("Student inserted");
+            } else if (accountType === "society") {
+              await connection.promise().query(`INSERT INTO Society_member (User_id , Member_id) VALUES (? , ?)`, [User_id , User_id]);
+              console.log("Member inserted");
+            }
 
             let returnMessage = {
               isSuccessful: true,
@@ -113,6 +127,7 @@ const signup = asyncHandler(async (req, response) => {
     }
   });
 });
+
 
 const login = asyncHandler(async (req, response) => {
   let email = req.body.email;
