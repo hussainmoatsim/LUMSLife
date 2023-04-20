@@ -1,35 +1,4 @@
-Skip to content
-Search or jump to…
-Pulls
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@ShafayKashif 
-hussainmoatsim
-/
-LUMSLife
-Private
-Fork your own copy of hussainmoatsim/LUMSLife
-Code
-Issues
-Pull requests
-3
-Actions
-Projects
-Security
-More
-Beta Try the new code view
-LUMSLife/LUMSLife/backend/controllers/studentController.js /
-@24100123
-24100123 Added create bookings , view and approve bookings
-Latest commit f543040 2 days ago
- History
- 2 contributors
-@24100123@hussainmoatsim
-57 lines (45 sloc)  1.8 KB
- 
+
 
 const asyncHandler = require("express-async-handler");
 const { db } = require("../config/db_create");
@@ -88,18 +57,3 @@ module.exports = {
   interact_post,
   bookEvent
 };
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-LUMSLife/studentController.js at shafay · hussainmoatsim/LUMSLife
