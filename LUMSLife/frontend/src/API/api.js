@@ -19,7 +19,7 @@ export async function signup(email, password, username, accountType) {
 
 // login to an existing account with the specified email and password
 // return a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function login(email, password) {
+export async function login(email, password,accountType) {
   const request = {
     email: email,
     password: password,
