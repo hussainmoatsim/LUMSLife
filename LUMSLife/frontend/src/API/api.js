@@ -119,3 +119,12 @@ export async function updateStudent(Student_id, student_name, cv, about_me) {
 
     return await axios.post(`${url}/student/updateStudent`, request)
 }
+export async function updateSociety(Society_id, society_name) {
+
+    const request = {
+        Society_id: Society_id,
+        society_name: society_name
+    }
+
+    return await axios.post(`${url}/society/updateSociety`, request)
+}
