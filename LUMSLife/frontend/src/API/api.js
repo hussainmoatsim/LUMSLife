@@ -128,3 +128,11 @@ export async function updateSociety(Society_id, society_name) {
 
     return await axios.post(`${url}/society/updateSociety`, request)
 }
+export async function getStudentInfo(User_id) {
+
+    const request = {
+        User_id: User_id
+    }
+
+    return await axios.post(`${url}/student/getStudentInfo`, request)
+}
