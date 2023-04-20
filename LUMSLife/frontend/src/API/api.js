@@ -80,3 +80,11 @@ export async function removeSocietyAccount(Society_id) {
 
   return await axios.post(`${url}/general/removeSocietyAccount`, request)
 }
+export async function getAccountInfo(User_id) {
+
+    const request = {
+        User_id: User_id
+    }
+
+    return await axios.post(`${url}/general/getAccountInfo`, request)
+}
