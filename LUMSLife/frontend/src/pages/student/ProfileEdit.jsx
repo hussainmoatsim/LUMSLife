@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Stack, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-// import "../CSS/ProfileEdit.css";
+import "../../CSS/ProfileEdit.css";
 import { editStudentInfo } from "../../API/api.js";
 
 function ProfileEdit({ userId }) {
