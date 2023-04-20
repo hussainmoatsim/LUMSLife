@@ -21,7 +21,7 @@ const userTable =
 const studentTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
-  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, cv varchar(255) , about_me varchar(255) , PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
+  ".Student (Student_id int NOT NULL AUTO_INCREMENT, User_id int NOT NULL, student_name varchar(255), cv varchar(255), about_me varchar(255) , PRIMARY KEY (Student_id), FOREIGN KEY (User_id) REFERENCES User(User_id))";
 const societyMemberTable =
   "CREATE TABLE IF NOT EXISTS " +
   process.env.DATABASE +
