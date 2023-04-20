@@ -2,6 +2,7 @@ import axios from "axios";
 
 // export let url = `http://localhost:3000/api`;
 export let url = 'https://guarded-river-13886.herokuapp.com/api'
+console.log(url)
 
 //the data returned by a function can be accessed by using .data on the object
 
@@ -24,7 +25,7 @@ export async function login(email, password) {
     email: email,
     password: password,
   };
-
+  console.log(url)
   return await axios.post(`${url}/general/login`, request);
 }
 
