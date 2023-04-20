@@ -283,6 +283,37 @@ export async function deleteUserAccount(req, response) {
         }
     })
 }
+export async function updateUser(req, response) {
+
+    let User_id = req.body.User_id
+    let newEmail = req.body.newEmail
+    let newPassword = req.body.newPassword
+
+    let connection = validateConnection()
+
+    let updateUser = `UPDATE User SET email = ?, password = ? WHERE User_id = ?`
+    let fields = [newEmail, newPassword, User_id]
+
+    connection.query(updateUser, fields, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Account couldn't be updated"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 
 const email_verification = asyncHandler(async (req, res) => {
   let user_email = req.body.email;
@@ -320,5 +351,6 @@ module.exports = {
   search,
   getAccountInfo,
   deleteUserAccount,
+  updateUser,
   
 };
