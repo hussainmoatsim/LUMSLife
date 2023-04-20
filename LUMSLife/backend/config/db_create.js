@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let db = mysql.createConnection({
   database: process.env.DATABASE,
   host: process.env.HOST,
-  // user: process.env.USER,
-  // password: process.env.PASSWORD
-  user: 'root',
-  password: 'pass'
+  user: process.env.USER,
+  password: process.env.PASSWORD
+  // user: 'root',
+  // password: 'pass'
 });
 
 const userTable =
