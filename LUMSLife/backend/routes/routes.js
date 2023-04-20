@@ -15,6 +15,8 @@ router.post("/search", generalController.search);
 router.post("/getAccountInfo", generalController.getAccountInfo)
 router.post("/deleteUserAccount", generalController.deleteUserAccount)
 router.post("/updateUser", generalController.updateUser)
+router.post("/adminSearch", generalController.adminSearch)
+
 
 
 router.post('/removeSocietyAccount', societyController.removeSocietyAccount);
