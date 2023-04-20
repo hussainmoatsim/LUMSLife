@@ -136,3 +136,12 @@ export async function getStudentInfo(User_id) {
 
     return await axios.post(`${url}/student/getStudentInfo`, request)
 }
+
+export async function getSocietyInfo(User_id) {
+
+    const request = {
+        User_id: User_id
+    }
+
+    return await axios.post(`${url}/society/getSocietyInfo`, request)
+}
