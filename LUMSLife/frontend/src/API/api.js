@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export let url = `http://localhost:3000/api`;
+// export let url = `http://localhost:3000/api`;
+export let url = 'https://guarded-river-13886.herokuapp.com/api'
 
 //the data returned by a function can be accessed by using .data on the object
 
