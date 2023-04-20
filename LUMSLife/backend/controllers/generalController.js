@@ -166,6 +166,198 @@ const login = asyncHandler(async (req, response) => {
   });
   connection.end();
 });
+export async function search(req, response) {
+
+  let searchString = req.body.searchString
+  
+
+  let querySociety = `SELECT * FROM Society WHERE name LIKE ? OR Society_id LIKE ?`
+  let valuesSociety = [`${searchString}%`, `${searchString}%`]
+
+  let queryPosts = `SELECT * FROM Posts WHERE category LIKE ? OR title LIKE ? OR description LIKE ? OR location LIKE ?`
+  let valuesPosts = [`${searchString}%`, `${searchString}%`, `${searchString}%`, `${searchString}%`]
+
+  let queryEvents = `SELECT * FROM Events WHERE name LIKE ? OR date LIKE ?`
+  let valuesEvents = [`${searchString}%`, `${searchString}%`]
+
+  let connection = validateConnection()
+
+  connection.query(querySociety, valuesSociety, (err, res) => {
+      if (err) {
+          console.log(err)
+
+      } else {
+          let societyList = res
+          connection.query(queryPosts, valuesPosts, (err, res) => {
+              
+              if (err) {
+                  console.log(err)
+      
+              } else {
+                  let postsList = res
+                  connection.query(queryEvents, valuesEvents, (err, res) => {
+              
+                    if (err) {
+                        console.log(err)
+            
+                    } else {
+                        let eventsList = res
+                  console.log(societyList)
+                  console.log(postsList)
+                  console.log(eventsList)
+                  let returnMessage = {
+                      "societyList": societyList,
+                      "postsList": postsList,
+                      "eventsList": eventsList
+
+                  }
+                  
+                  response.send(returnMessage)
+                  connection.end()
+              }
+          })
+      }
+  })
+
+}
+  })}
+
+export async function adminSearch(req, response) {
+
+  let searchString = req.body.searchString
+  
+
+  let querySociety = `SELECT * FROM Society WHERE society_name LIKE ? OR Society_id LIKE ?`
+  let valuesSociety = [`${searchString}%`, `${searchString}%`]
+
+  let queryStudents = `SELECT * FROM Student WHERE student_name LIKE ? OR cv LIKE ? OR about_me LIKE ? OR Student_id LIKE ?`
+  let valuesStudents = [`${searchString}%`, `${searchString}%`, `${searchString}%`, `${searchString}%`]
+
+  let connection = validateConnection()
+
+  connection.query(querySociety, valuesSociety, (err, res) => {
+      if (err) {
+          console.log(err)
+
+      } else {
+          let societyList = res
+          connection.query(queryStudents, valuesStudents, (err, res) => {
+              
+              if (err) {
+                  console.log(err)
+      
+              } else {
+                        let studentList = res
+                  console.log(societyList)
+                  console.log(studentList)
+                  let returnMessage = {
+                      societyList: societyList,
+                      studentList: studentList
+
+                  }
+                  
+                  response.send(returnMessage)
+                  connection.end()
+              }
+          })
+      }
+  })
+
+}
+
+
+export async function getAccountInfo(req, response) {
+    let User_id = req.body.User_id
+
+    let getData = `SELECT * FROM User WHERE User_id = ?`
+    let fields = [User_id]
+
+    let connection = validateConnection()
+    connection.query(getData, [fields], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Your request couldn't be processed"
+            }
+
+            response.send(returnMessage)
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                isSuccessful: true,
+                userID: data.User_id,
+                userType: data.User_type,
+                name: data.name,
+                email: data.email,
+                password: data.password
+            }
+
+            response.send(returnMessage)
+        }
+    })
+}
+export async function deleteUserAccount(req, response) {
+
+    let User_id = req.body.User_id
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM User WHERE User_id = ?`
+    let fields = [User_id]
+
+    connection.query(deleteAccount, fields, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Account couldn't be deleted"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+export async function updateUser(req, response) {
+
+    let User_id = req.body.User_id
+    let newEmail = req.body.newEmail
+    let newPassword = req.body.newPassword
+
+    let connection = validateConnection()
+
+    let updateUser = `UPDATE User SET email = ?, password = ? WHERE User_id = ?`
+    let fields = [newEmail, newPassword, User_id]
+
+    connection.query(updateUser, fields, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                isSuccessful: false,
+                errorMessage: "Account couldn't be updated"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                isSuccessful: true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 
 const email_verification = asyncHandler(async (req, res) => {
   let user_email = req.body.email;
@@ -200,4 +392,10 @@ module.exports = {
   login,
   validateEmail,
   email_verification,
+  search,
+  getAccountInfo,
+  deleteUserAccount,
+  updateUser,
+  adminSearch
+  
 };
