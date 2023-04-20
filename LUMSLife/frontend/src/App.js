@@ -13,6 +13,7 @@ import Navbar from "./pages/Navbar.js";
 import VerifyEmail from "./pages/VerifyEmail";
 import CreatePost from "./pages/society/CreatePost";
 import Profile from "./pages/student/StudentProfile.jsx";
+import SocietyProfile from "./pages/society/SocietyProfile";
 
 function App() {
   const [accountID, setAccountID] = useState(null);
@@ -43,6 +44,7 @@ function App() {
             ></Route>
             <Route path="/verify-email" element={<VerifyEmail />}></Route>
             <Route path="/profile" element={<Profile />}></Route>{" "}
+            <Route path="/society-profile" component={SocietyProfile} />
             {/* Add the Profile route */}
           </Routes>
         </div>
