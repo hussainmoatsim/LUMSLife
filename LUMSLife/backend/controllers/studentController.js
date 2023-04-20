@@ -1,111 +1,105 @@
+Skip to content
+Search or jump to…
+Pulls
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@ShafayKashif 
+hussainmoatsim
+/
+LUMSLife
+Private
+Fork your own copy of hussainmoatsim/LUMSLife
+Code
+Issues
+Pull requests
+3
+Actions
+Projects
+Security
+More
+Beta Try the new code view
+LUMSLife/LUMSLife/backend/controllers/studentController.js /
+@24100123
+24100123 Added create bookings , view and approve bookings
+Latest commit f543040 2 days ago
+ History
+ 2 contributors
+@24100123@hussainmoatsim
+57 lines (45 sloc)  1.8 KB
+ 
+
 const asyncHandler = require("express-async-handler");
 const { db } = require("../config/db_create");
 
-const validateConnection = () => {
-    let connection = createConnection({
-      host: process.env.HOST,
-      user: process.env.USER,
-      password: process.env.PASSWORD,
-      database: process.env.DATABASE,
-      multipleStatements: false,
-    });
-    connection.connect((err) => {
-      if (err) {
-        console.log("Connection Failed");
-      } else {
-        console.log("Connected");
-      }
-    });
-    return connection;
-  };
+const interact_post = asyncHandler(async (req, res) => {
+  let { post_id, user_id, liked, comment } = req.body;
+  //get user name from user id
+    const name_sql = `SELECT name FROM User WHERE User_id = ?`;
+    const [user, _] = await db.promise().query(name_sql, [user_id]);
+    const name = user[0].name;
+    comment = name + ": " + comment;
 
-export async function removeStudentAccount(req, response) {
+  const sql = `INSERT INTO Interactions (post_id, user_id, liked, comment) 
+             VALUES (?, ?, ?, ?)`;
 
-    let Student_id = req.body.Student_id
+  const values = [post_id, user_id, liked, comment];
 
-    let connection = validateConnection()
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to interact with the post" });
+    }
+    console.log(`Interaction with post ID ${post_id} created`);
+    return res.status(201).json({ message: "Post interaction created" });
+  });
+});
 
-    let deleteAccount = `DELETE FROM studentTable WHERE Student_id = ?`
-    let values = [Student_id]
 
-    connection.query(deleteAccount, values, (err, res) => {
+const bookEvent = asyncHandler(async (req, res) => {
+  const { user_id, event_id } = req.body;
 
-        if (err) {
-            let returnMessage = {
-                isSuccessful: false,
-                errorMessage: "Could not delete account"
-            }
-            response.send(returnMessage)
-            connection.end()
+  // Check if the user has already booked the event
+  const unconfirmedBookingSQL = `
+    SELECT COUNT(*) as unconfirmed_count
+    FROM Bookings
+    WHERE user_id = ? AND confirmed = 0
+  `;
+  const [unconfirmedResult] = await db.promise().query(unconfirmedBookingSQL, [user_id]);
+  const unconfirmedCount = unconfirmedResult[0].unconfirmed_count;
 
-        } else {
-            let returnMessage = {
-                isSuccessful: true
-            }
-            response.send(returnMessage)
-            connection.end()
-        }
-    })
-}
-export async function updateStudent(req, response) {
+  
+  if (unconfirmedCount >= 1) { //prevents users from booking more than one event at a time
+    return res.status(400).json({ message: "Too many unconfirmed bookings" });
+  }
 
-    let Student_id = req.body.Student_id
-    let student_name = req.body.student_name
-    let cv = req.body.cv
-    let about_me = req.body.about_me
+  // Book the event
+  const bookingSQL = `
+    INSERT INTO Bookings (user_id, event_id, confirmed)
+    VALUES (?, ?, 0)
+  `;
+  await db.promise().query(bookingSQL, [user_id, event_id]);
 
-    let updateStudent = `UPDATE studentTable SET student_name = ?, cv = ?, about_me = ? WHERE Student_id= = ?`
-    let fields = [student_name, cv, about_me, Student_id]
+  res.status(201).json({ message: "Event booked successfully" });
+});
 
-    console.log(req.body)
-    let connection = validateConnection()
-    connection.query(updateStudent, fields, (err, res) => {
-        if (err) {
-            let returnMessage = {
-                isSuccessful: false,
-                errorMessage: "Your info couldn't be updated"
-            }
-            response.send(returnMessage)
-            connection.end()
-
-            console.log(err)
-
-        } else {
-
-            let returnMessage = {
-                isSuccessful: true
-            }
-            response.send(returnMessage)
-            connection.end()
-        }
-    })
-
-    connection.end()
-}
-export async function getStudentInfo(req, response) {
-
-    let User_id = req.body.User_id
-
-    let getInfo = `SELECT * FROM studentTable WHERE User_id = ?`
-    let values = [User_id]
-
-    let connection = validateConnection()
-    connection.query(getInfo, [values], (err, res) => {
-        if (err) {
-            console.log(err)
-        } else {
-
-            let data = res[0]
-
-            let returnMessage = {
-                isSuccessful: true,
-                student_name: data.student_name,
-                cv: data.cv,
-                about_me: data.about_me,
-            }
-
-            response.send(returnMessage)
-            connection.end()
-        }
-    })
-}
+module.exports = {
+  interact_post,
+  bookEvent
+};
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+LUMSLife/studentController.js at shafay · hussainmoatsim/LUMSLife
