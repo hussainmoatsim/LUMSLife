@@ -2,9 +2,9 @@ import axios from "axios";
 
 // export let url = `http://localhost:3000/api`;
 // export const url = process.env.REACT_APP_API_BASE_URL;
-export let url = "/api"
+// export let url = "/api"
 
-// export let url = 'https://guarded-river-13886.herokuapp.com/api'
+export let url = 'https://guarded-river-13886.herokuapp.com/api'
 console.log(url)
 
 //the data returned by a function can be accessed by using .data on the object
