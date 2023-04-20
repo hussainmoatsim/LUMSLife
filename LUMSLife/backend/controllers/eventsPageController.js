@@ -32,7 +32,13 @@ const getEventAttendance = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-  const { name, description, date, society_id, location } = req.body;
+  const { name, description, date, society_name, location } = req.body;
+
+  
+  const society_sql = `SELECT Society_id FROM Society WHERE society_name = ?`;
+  const [society] = await db.promise().query(society_sql, [society_name]);
+  const society_id = society[0].Society_id;
+  
   const sql = "INSERT INTO Events (name, description, date, society_id, location) VALUES (?, ?, ?, ?, ?)";
   const values = [name, description, date, society_id, location];
 

@@ -11,9 +11,6 @@ router.post("/signup", generalController.signup);
 router.post("/login", generalController.login);
 router.post("/validateEmail", generalController.validateEmail);
 router.post("/verify-email", generalController.email_verification);
-router.post("/create-post", societyController.create_post);
-router.get("/homefeed", homeFeedController.getHomeFeed);
-router.post("/interact-post", studentController.interact_post);
 
 router.get("/events/info", eventsController.getEventInfo);
 router.get("/events/attendance", eventsController.getEventAttendance);
@@ -22,7 +19,12 @@ router.post("/events/attend", eventsController.attendEvent);
 
 router.get("/society/view_bookings", societyController.view_bookings);
 router.put("/society/confirm_booking", societyController.confirm_booking);
+router.post("/create-post", societyController.create_post);
+router.get("/society/joined", societyController.getJoinedSocieties);
+
 router.post("/student/create_booking", studentController.bookEvent);
 router.post("/student/applyForSociety", studentController.applyForSociety);
+router.post("/interact-post", studentController.interact_post);
 
+router.get("/homefeed", homeFeedController.getHomeFeed);
 module.exports = router;

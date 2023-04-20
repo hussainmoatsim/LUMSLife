@@ -9,8 +9,12 @@ const create_post = asyncHandler(async (req, res) => {
     eventDescription,
     eventLocation,
     user_id,
-    society_id, // added society_id
+    society_name,
   } = req.body;
+
+  const society_sql = `SELECT Society_id FROM Society WHERE society_name = ?`;
+  const [society] = await db.promise().query(society_sql, [society_name]);
+  const society_id = society[0].Society_id;
 
   const sql = `INSERT INTO Posts (title, date_time, category, description, location, user_id, society_id) 
              VALUES (?, ?, ?, ?, ?, ?, ?)`; // added society_id
@@ -61,8 +65,29 @@ const confirm_booking = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Booking confirmed" });
 });
 
+const getJoinedSocieties = asyncHandler(async (req, res) => {
+  console.log("getJoinedSocieties");
+  const user_id = req.query.user_id;
+
+  const sql = `
+    SELECT s.society_name
+    FROM Society_membership sm
+    JOIN Society s ON sm.Society_id = s.Society_id
+    JOIN Society_member m ON sm.member_id = m.member_id
+    WHERE m.User_id = ? AND sm.joined = 1
+  `;
+
+  const [societies] = await db.promise().query(sql, [user_id]);
+  console.log(user_id);
+  console.log(societies);
+
+  res.status(200).json({ societies: societies.map(s => s.society_name) });
+});
+
+
 module.exports = {
   create_post,
   view_bookings,
-  confirm_booking
+  confirm_booking,
+  getJoinedSocieties
 };
